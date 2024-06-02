@@ -3,7 +3,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import {
     CheckIcon,
-    PencilIcon } from '@heroicons/react/20/solid';
+    PencilIcon 
+} from '@heroicons/react/20/solid';
 
 import { useNavigate } from "react-router-dom";
 import { changeUsernameSuccess } from "../redux/userSlice";
@@ -17,7 +18,8 @@ export function User() {
         password: "",
         branch:"",
         dateofbirth:"",
-        //verified: false
+        verified: false,
+        role: "user"
     });
 
     const params = useParams();
@@ -196,8 +198,34 @@ export function User() {
                             />
                         </div>
 
+                        <div className="sm:col-span-2 flex flex-row items-center">
+                            <label htmlFor="verified" className="block text-sm font-medium leading-6 text-gray-900 mr-2">Status:</label>
+                            {form.verified
+                                ? <h2 className="text-green-500 text-sm">
+                                    Verified
+                                </h2>
+                                : <h2 className="text-red-500 textsm">
+                                    Not Verified
+                                </h2>
+                            }
+                        </div>
+
+                        <div className="sm:col-span-2">
+                        <label htmlFor="role" className="block text-sm font-medium leading-6 text-gray-900">Role:</label>
+                            <select 
+                                    name="role" 
+                                    value={form.role}
+                                    onChange={e => {setForm(prev => ({...prev, role: e.target.value}))}}
+                                    className="block flex-1 rounded-md border-0 py-1.5 pl-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:w-full sm:text-sm sm:leading-6"
+                            >
+                                <option></option>
+                                <option value="admin">Admin</option>
+                                <option value="user">User</option>
+                            </select>
+                        </div>
+
                         {isEditing 
-                            ? <div className="sm:col-span-1 flex justify-center">
+                            ? <div className="sm:col-span-6 flex justify-center">
                                 <button type="submit" className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                                     <CheckIcon className="-ml-1.5 mr-1.5 h-5 w-7" aria-hidden="true" />
                                     Confirm Changes

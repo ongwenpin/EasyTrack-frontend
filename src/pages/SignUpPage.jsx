@@ -16,6 +16,7 @@ export function SignUpPage() {
         branch:"",
         dateofbirth:"",
         verified: false,
+        role: "user"
     });
 
     const [signupSuccess, setSignupSuccess] = useState(false);
@@ -36,6 +37,7 @@ export function SignUpPage() {
             branch:"",
             dateofbirth:"",
             verified: false,
+            role: "user"
         }));
         setSignupSuccess(prev => !prev);
     };
