@@ -3,13 +3,17 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import {
     CheckIcon,
-    PencilIcon 
+    PencilIcon, 
+    PlusIcon
 } from '@heroicons/react/20/solid';
 
 import { useNavigate } from "react-router-dom";
 import { changeUsernameSuccess } from "../redux/userSlice";
+import { useSelector } from "react-redux";
 
 export function User() {
+
+    const {isAdmin} = useSelector((state) => state.user);
 
     const [form, setForm] = useState({
         username: "",
@@ -30,9 +34,11 @@ export function User() {
 
     const [originalUser, setOriginalUser] = useState("");
 
-    async function fetchUsers() {
+    const [isNewUser, setIsNewUser] = useState(true);
+
+    async function fetchUserData() {
         const username = params.username;
-        setOriginalUser(prev => username);
+        
         const link = `http://localhost:5050/api/users/` + username;
         const response = await axios.get(link, {withCredentials: true});
         
@@ -45,12 +51,25 @@ export function User() {
         const formattedDate = `${year}-${month}-${day}`;
 
         const user = {...response.data, dateofbirth: formattedDate};
-        setForm(user);
+        return user;
 
     }
     
     useEffect(() => {
-        fetchUsers();
+        const username = params.username?.toString() || undefined;
+        if (!username) {
+            setIsEditing(true);
+            return;
+        }
+
+        setIsNewUser(false);
+
+        fetchUserData().then(user => {
+            setForm(user);
+            setOriginalUser(user.username);
+        }).catch(error => {
+            console.log(error);
+        });
     }, []);
 
     const toggleEditingMode = () => {
@@ -63,13 +82,23 @@ export function User() {
             <form onSubmit={async (e)=>{
                 e.preventDefault()
                 try {
-                    const response = await axios.patch("http://localhost:5050/api/users/" + originalUser, form, {withCredentials: true});
-                    console.log("User updated successfully");
-                    if (originalUser !== form.username) {
+                    if (isNewUser) {
+                        const response = await axios.post("http://localhost:5050/api/users", form, {withCredentials: true});
+                        console.log("User created successfully");
                         navigate("/user/" + form.username);
                         changeUsernameSuccess(form.username);
+                        toggleEditingMode();
+                    } else {
+                        const response = await axios.patch("http://localhost:5050/api/users/" + originalUser, form, {withCredentials: true});
+                        console.log("User updated successfully");
+                        if (originalUser !== form.username) {
+                            navigate("/user/" + form.username);
+                            changeUsernameSuccess(form.username);
+                        }
+                        toggleEditingMode();
+
                     }
-                    toggleEditingMode();
+                    
                 } catch (error) {
                     e.stopPropagation();
                     console.log(error.response.data);
@@ -78,37 +107,56 @@ export function User() {
             }}>
                 <div className="border-b border-gray-900/10 pb-12 ml-7">
 
-                    <div className="flex justify-center mb-5">
+                    <div className="flex justify-center mb-5 text-bold text-center">
                         <h2 className="text-base font-semibold leading-7 text-gray-900">User Profile</h2>
                     </div>
                     
 
                     <div className="sm:col-span-1 flex justify-center">
-                        {!isEditing && <div className="sm:col-span-4">
-                        <button
-                            type="button"
-                            onClick={() => {
-                                toggleEditingMode();
-                            }}
-                            className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                        >
-                            <PencilIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
-                            Edit
-                        </button>
-                        </div>}
-
-                        {isEditing && <div className="sm:col-span-1">
-                            <button 
-                                type="button"
-                                onClick={() => {
-                                    toggleEditingMode();
-                                    fetchUsers();
-                                }}
-                                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        {!isEditing && isAdmin && 
+                            <div className="sm:col-span-4">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        toggleEditingMode();
+                                    }}
+                                    className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                                 >
-                                    Cancel Edit
+                                    <PencilIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />      
+                                    Edit User
                                 </button>
-                        </div>}
+                            </div>
+                        }
+
+                        {isEditing 
+                            ? <div className="sm:col-span-3 flex justify-center space-x-4">
+                                <button type="submit" className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                    <CheckIcon className="-ml-1.5 mr-1.5 h-5 w-7" aria-hidden="true" />
+                                    Confirm
+                                </button>
+                                {   
+                                    !isNewUser &&
+                                    <div className="sm:col-span-3">
+                                        <button 
+                                            type="button"
+                                            onClick={() => {  
+                                                fetchUserData().then(user => {
+                                                    setForm(user);
+                                                    toggleEditingMode();
+                                                }).catch(error => {
+                                                    console.log(error);
+                                                });
+                                            }}
+                                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                            >
+                                                Cancel 
+                                        </button>
+                                    </div>
+                                }
+                            </div> 
+                            : <div className="sm:col-span-1"></div>
+                        }
+
                     </div>
 
                     <fieldset disabled={!isEditing} className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -118,6 +166,7 @@ export function User() {
                             <input
                                 id="username"  
                                 value={form.username}
+                                required
                                 onChange={e => {
                                         setForm(prev => ({...prev, username: e.target.value}))
                                     }
@@ -131,6 +180,7 @@ export function User() {
                             <input 
                                 id="name"  
                                 value={form.name}
+                                required
                                 onChange={e => {
                                         setForm(prev => ({...prev, name: e.target.value}))
                                     }
@@ -144,6 +194,7 @@ export function User() {
                             <input 
                                 id="email"  
                                 value={form.email}
+                                required
                                 type="email"
                                 onChange={e => {
                                         setForm(prev => ({...prev, email: e.target.value}))
@@ -158,6 +209,7 @@ export function User() {
                             <input 
                                 id="password"  
                                 value={form.password}
+                                required
                                 type="password"
 
                                 onChange={e => {
@@ -173,6 +225,7 @@ export function User() {
                             <select 
                                     name="branch" 
                                     value={form.branch}
+                                    required
                                     onChange={e => {setForm(prev => ({...prev, branch: e.target.value}))}}
                                     className="block flex-1 rounded-md border-0 py-1.5 pl-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:w-full sm:text-sm sm:leading-6"
                             >
@@ -189,6 +242,7 @@ export function User() {
                             <input 
                                 id="dateofbirth"  
                                 value={form.dateofbirth}
+                                required
                                 type="date"
                                 onChange={e => {
                                         setForm(prev => ({...prev, dateofbirth: e.target.value}))
@@ -197,42 +251,39 @@ export function User() {
                                 className="block flex-1 border-0 rounded-md bg-transparent py-1.5 pl-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
                             />
                         </div>
+                        
+                        {
+                            !isNewUser && 
+                            <>
+                                <div className="sm:col-span-2 flex flex-row items-center">
+                                    <label htmlFor="verified" className="block text-sm font-medium leading-6 text-gray-900 mr-2">Status:</label>
+                                    {form.verified
+                                        ? <h2 className="text-green-500 text-sm">
+                                            Verified
+                                        </h2>
+                                        : <h2 className="text-red-500 textsm">
+                                            Not Verified
+                                        </h2>
+                                    }
+                                </div>
 
-                        <div className="sm:col-span-2 flex flex-row items-center">
-                            <label htmlFor="verified" className="block text-sm font-medium leading-6 text-gray-900 mr-2">Status:</label>
-                            {form.verified
-                                ? <h2 className="text-green-500 text-sm">
-                                    Verified
-                                </h2>
-                                : <h2 className="text-red-500 textsm">
-                                    Not Verified
-                                </h2>
-                            }
-                        </div>
-
-                        <div className="sm:col-span-2">
-                        <label htmlFor="role" className="block text-sm font-medium leading-6 text-gray-900">Role:</label>
-                            <select 
-                                    name="role" 
-                                    value={form.role}
-                                    onChange={e => {setForm(prev => ({...prev, role: e.target.value}))}}
-                                    className="block flex-1 rounded-md border-0 py-1.5 pl-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:w-full sm:text-sm sm:leading-6"
-                            >
-                                <option></option>
-                                <option value="admin">Admin</option>
-                                <option value="user">User</option>
-                            </select>
-                        </div>
-
-                        {isEditing 
-                            ? <div className="sm:col-span-6 flex justify-center">
-                                <button type="submit" className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                                    <CheckIcon className="-ml-1.5 mr-1.5 h-5 w-7" aria-hidden="true" />
-                                    Confirm Changes
-                                </button>
-                            </div> 
-                            : <div className="sm:col-span-1"></div>
+                                <div className="sm:col-span-2">
+                                <label htmlFor="role" className="block text-sm font-medium leading-6 text-gray-900">Role:</label>
+                                    <select 
+                                            name="role" 
+                                            value={form.role}
+                                            onChange={e => {setForm(prev => ({...prev, role: e.target.value}))}}
+                                            className="block flex-1 rounded-md border-0 py-1.5 pl-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:w-full sm:text-sm sm:leading-6"
+                                    >
+                                        <option></option>
+                                        <option value="admin">Admin</option>
+                                        <option value="user">User</option>
+                                    </select>
+                                </div>
+                            </>
                         }
+
+                        
 
                     </fieldset>
                     

@@ -42,11 +42,11 @@ export function SignUpPage() {
         setSignupSuccess(prev => !prev);
     };
 
-    return signupSuccess 
-        ? (
+    return (
+        <>
             <>  
-                <Transition show={signUpSuccess}>
-                    <Dialog className="relative z-10" onClose={signUpSuccess}>
+                <Transition show={signupSuccess}>
+                    <Dialog className="relative z-10" onClose={setSignupSuccess}>
 
                         <TransitionChild
                         enter="ease-out duration-300"
@@ -117,8 +117,7 @@ export function SignUpPage() {
 
                 </Transition>
             </>
-        )
-        : (
+
             <>
                 <form onSubmit={async (e)=>{
                     e.preventDefault();
@@ -149,6 +148,7 @@ export function SignUpPage() {
                                     <input 
                                         id="username"  
                                         value={form.username}
+                                        required
                                         onChange={e => {
                                                 setForm(prev => ({...prev, username: e.target.value}))
                                             }
@@ -162,7 +162,7 @@ export function SignUpPage() {
                                         <input 
                                             id="name"  
                                             value={form.name}
-
+                                            required
                                             onChange={e => {
                                                     setForm(prev => ({...prev, name: e.target.value}))
                                                 }
@@ -177,6 +177,7 @@ export function SignUpPage() {
                                         id="email"  
                                         value={form.email}
                                         type="email"
+                                        required
                                         onChange={e => {
                                                 setForm(prev => ({...prev, email: e.target.value}))
                                             }
@@ -191,6 +192,7 @@ export function SignUpPage() {
                                             id="password"  
                                             value={form.password}
                                             type="password"
+                                            required
                                             onChange={e => {
                                                     setForm(prev => ({...prev, password: e.target.value}))
                                                 }
@@ -206,6 +208,7 @@ export function SignUpPage() {
                                             name="branch" 
                                             value={form.branch}
                                             style={{ width: '300px' }}
+                                            required
                                             onChange={e => {setForm(prev => ({...prev, branch: e.target.value}))}}
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:w-full sm:text-sm sm:leading-6"
                                         >
@@ -224,6 +227,7 @@ export function SignUpPage() {
                                             id="dateofbirth"  
                                             value={form.dateofbirth}
                                             type="date"
+                                            required
                                             onChange={e => {
                                                     setForm(prev => ({...prev, dateofbirth: e.target.value}))
                                                 }
@@ -252,7 +256,7 @@ export function SignUpPage() {
                     </div>
                 </form>
             </>
-        )
-
+        </>
+    )
 
 }

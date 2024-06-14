@@ -6,7 +6,8 @@ const initialState = {
     error: "",
     verified: false,
     hasCurrentUser: false,
-    hasError: false
+    hasError: false,
+    isAdmin: false
 };
 
 const userSlice = createSlice({
@@ -25,6 +26,7 @@ const userSlice = createSlice({
             state.error = "";
             state.hasError = false;
             state.verified = action.payload.verified;
+            state.isAdmin = action.payload.role === "admin";    
         },
         logInFailure: (state, action) => {
             state.loading = false;
@@ -42,6 +44,8 @@ const userSlice = createSlice({
             state.loading = false;
             state.error = "";
             state.hasError = false;
+            state.verified = false;
+            state.isAdmin = false;
         },
         logOutFailure: (state, action) => {
             state.loading = false;
