@@ -28,7 +28,6 @@ export function LoginPage() {
                         try {
                             dispatch(logInStart());
                             const response = await axios.post("http://localhost:5050/api/auth", form, {withCredentials: true});
-                            console.log(response)
                             dispatch(logInSuccess(response.data));
                             // Redirect to previous page or dashboard
                             const redirect = searchParams.get("redirect");
