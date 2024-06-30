@@ -12,6 +12,8 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { User } from './pages/User.jsx';
 import EmailVerificationPage from './pages/EmailVerificationPage.jsx';
+import RecordsList from './pages/RecordsList.jsx';
+import Record from './pages/Record.jsx';
 
 // If path unknown, redirect to some page
 const router = createBrowserRouter([
@@ -28,12 +30,20 @@ const router = createBrowserRouter([
         element: <UsersList/>
       },
       {
-        path: "/user/:username",
+        path: "/user/:username?",
         element: <User/>
       },
       {
         path: "/verify/:verify_key",
         element: <EmailVerificationPage/>
+      },
+      {
+        path: "/records",
+        element: <RecordsList/>
+      },
+      {
+        path: "/record/:id?",
+        element: <Record/>
       }
     ]
   },

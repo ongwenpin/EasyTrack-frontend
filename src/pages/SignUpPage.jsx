@@ -125,7 +125,6 @@ export function SignUpPage() {
                         dispatch(signUpStart());
                         const response = await axios.post("http://localhost:5050/api/signup", form);
                         console.log("User created successfully");
-                        console.log(response);
                         dispatch(signUpSuccess());
                         setSignupSuccess(prev => !prev);
 

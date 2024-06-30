@@ -18,6 +18,7 @@ import axios from 'axios';
 const navigation = [
     { name: 'Dashboard', href: '/', current: true },
     { name: 'Users', href: '/users', current: false },
+    { name: 'Records', href: '/records', current: false},
 ];
 
 function classNames(...classes) {
@@ -42,7 +43,6 @@ export default function Navbar() {
 
   async function handleLogOut() {
     try {
-      console.log("Logging out");
       dispatch(logOutStart());
       const response = await axios.get("http://localhost:5050/api/logout", {withCredentials: true});
       dispatch(logOutSuccess());
