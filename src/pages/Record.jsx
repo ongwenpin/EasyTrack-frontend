@@ -184,6 +184,7 @@ export default function Record() {
                                     </button>
                                     <button
                                         type="button"
+                                        disabled={!isEditing}
                                         className="inline-flex items-center rounded-lg bg-red-500 my-2 mr-16 px-2 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-400"
                                         onClick={() => {
                                             setRecordForm(prev => ({
@@ -569,6 +570,7 @@ export default function Record() {
                                                 
                                                 <button
                                                     type="button"
+                                                    disabled={!isEditing}
                                                     className="inline-flex items-center rounded-lg bg-white my-2 px-2 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                                                     onClick={() => {
                                                         setRecordForm(prev => ({
