@@ -20,7 +20,11 @@ export default function RecordsList() {
            const response = await axios.get('http://localhost:5050/api/records', {withCredentials: true});
            return response;
         } catch (error) {
-            console.error(error)
+            if (error.response.status == 301) {
+                navigate('/login');
+                return;
+            }
+            console.error(error);
         }
     }
 
@@ -30,8 +34,6 @@ export default function RecordsList() {
             if (response) {
                 setRecords(response.data);
             }
-        }).catch((error) => {
-            console.error(error);
         });
         
     }, []);

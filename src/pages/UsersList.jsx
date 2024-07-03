@@ -79,17 +79,15 @@ export function UsersList() {
                 const response = await axios.get("http://localhost:5050/api/users", {withCredentials: true});
                 return response;
             } catch (error) {
-                console.log(error.response.status);
                 if (error.response.status === 301) {
-                    console.log(error.message);
-                    
+                    navigate("/login");
+                    return;
                 }
+                console.error(error);
             }
         }
         fetchUsers().then((response) => {
             setUserList(response.data);
-        }).catch((error) => {
-            console.log(error);
         });
 
     }, []);

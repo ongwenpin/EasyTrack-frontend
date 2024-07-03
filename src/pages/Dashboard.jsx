@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
+import { authenicateUser } from "../utils/auth";
 
 
 
@@ -9,24 +10,30 @@ export function Dashboard() {
     
     const { hasCurrentUser, verified } = useSelector((state) => state.user);
 
-    const [isVerified, setIsVerified] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if (!hasCurrentUser) {
-            navigate("/login");
-            return;
-        } 
-        setIsVerified(verified);
-    });
+        try {
+            authenicateUser().then((response) => {
+                if (!response) {
+                    navigate("/login");
+                }
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
+    }, []);
 
     
-    const navigate = useNavigate();
+    
     
     return (
         <>
             <h2>Welcome Back!</h2>
             
-            {!isVerified &&
+            {
+                verified &&
                 <div className="rounded bg-yellow-100 text-red-900 m-5 flex flex-col">
                     <div className="m-2 flex items-center">
                         <ExclamationTriangleIcon className="w-5 h-5 text-yellow-400 m-3 mr-2"/>

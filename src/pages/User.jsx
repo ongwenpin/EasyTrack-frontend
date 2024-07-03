@@ -40,15 +40,25 @@ export function User() {
     const [showSubmitSuccess, setShowSubmitSuccess] = useState(false);
 
     async function fetchUserData() {
-        const username = params.username;
-        
-        const link = `http://localhost:5050/api/users/` + username;
-        const response = await axios.get(link, {withCredentials: true});
-        
-        const formattedDate = formatDate(response.data.dateofbirth);
 
-        const user = {...response.data, dateofbirth: formattedDate};
-        return user;
+        try {
+            const username = params.username;
+        
+            const link = `http://localhost:5050/api/users/` + username;
+            const response = await axios.get(link, {withCredentials: true});
+            
+            const formattedDate = formatDate(response.data.dateofbirth);
+
+            const user = {...response.data, dateofbirth: formattedDate};
+            return user;
+
+        } catch (error) {
+            if (error.response.status === 301) {
+                navigate("/login");
+                return;
+            }
+            console.error(error);
+        }
 
     }
     
@@ -64,9 +74,8 @@ export function User() {
         fetchUserData().then(user => {
             setForm(user);
             setOriginalUser(user.username);
-        }).catch(error => {
-            console.log(error);
         });
+
     }, []);
 
     const toggleEditingMode = () => {
@@ -92,7 +101,6 @@ export function User() {
             }
             
         } catch (error) {
-            e.stopPropagation();
             console.log(error.response.data);
         }
     }

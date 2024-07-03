@@ -48,6 +48,9 @@ export default function Record() {
             });
             return response.data;
         } catch (error) {
+            if (error.response.status === 301) {
+                navigate('/login');
+            }
             console.log(error);
         }
     }
