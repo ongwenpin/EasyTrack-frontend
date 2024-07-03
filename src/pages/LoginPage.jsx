@@ -42,21 +42,6 @@ export function LoginPage() {
                             console.log(error.response.data);
                         }
                         
-                        // const response = await fetch("http://localhost:5050/api/auth", {
-                        //     method: "POST",
-                        //     headers: {
-                        //         "Content-Type": "application/json",
-                        //         "setCredentials": "include"
-                        //     },
-                        //     body: JSON.stringify(form)
-                        // });
-
-                        // if (response.ok) {
-                        //     console.log("User authenticated");
-                        //     //navigate("/dashboard");
-                        // } else {
-                        //     console.log(response.statusText);
-                        // }
                     }
                 
                 }
