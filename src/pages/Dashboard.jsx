@@ -33,7 +33,7 @@ export function Dashboard() {
             <h2>Welcome Back!</h2>
             
             {
-                verified &&
+                !verified &&
                 <div className="rounded bg-yellow-100 text-red-900 m-5 flex flex-col">
                     <div className="m-2 flex items-center">
                         <ExclamationTriangleIcon className="w-5 h-5 text-yellow-400 m-3 mr-2"/>

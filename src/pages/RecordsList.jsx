@@ -6,6 +6,7 @@ import { formatDate } from '../utils/dateFormatter';
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { ExclamationTriangleIcon, XCircleIcon} from "@heroicons/react/24/outline";
 import { useSelector } from 'react-redux';
+import Searchbar from '../components/Searchbar';
 
 export default function RecordsList() {
 
@@ -14,6 +15,17 @@ export default function RecordsList() {
     const navigate = useNavigate();
 
     const [records, setRecords] = useState([]);
+
+    const [displayedRecords, setDisplayedRecords] = useState([]);
+
+    const listCategories = [
+        {name: 'Record ID', value: '_id', searchable: true}, 
+        {name: 'Date', value: 'date', searchable: false}, 
+        {name: 'By', value: 'username', searchable: true}, 
+        {name: 'Branch', value: 'branch', searchable: true}, 
+        {name: 'Total Earnings', value: 'totalEarnings', searchable: false},
+        {name: 'Actions', value: 'actions', searchable: false}
+    ];
 
     async function fetchRecords() {
         try {
@@ -33,17 +45,28 @@ export default function RecordsList() {
         fetchRecords().then((response) => {
             if (response) {
                 setRecords(response.data);
+                setDisplayedRecords(response.data);
             }
         });
         
     }, []);
 
     function listRecords() {
-        return records.map((record) => {
+        if (displayedRecords.length === 0) {
             return (
-                <Record key={record._id} record={record}></Record>
+                <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                    <td colSpan={listCategories.length} className="h-16 px-4 text-center align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                        No records found
+                    </td>
+                </tr>
             );
-        });
+        } else {
+            return displayedRecords.map((record) => {
+                return (
+                    <Record key={record._id} record={record}></Record>
+                );
+            });
+        }
     }
 
     const [selectedRecord, setSelectedRecord] = useState(null);
@@ -51,45 +74,53 @@ export default function RecordsList() {
     const Record = (props) => {
         return (
             <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                <td className="h-16 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">   
-                    {props.record._id}
-                </td>
-                <td className="h-16 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                    {formatDate(props.record.date)}
-                </td>
-                <td className="h-16 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                    {props.record.username}
-                </td>
-                <td className="h-16 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                    {props.record.branch}
-                </td>
-                <td className="h-16 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                    {props.record.totalEarnings}
-                </td>
-                <td className="h-16 space-x-2 items-center align-middle [&amp;:has([role=checkbox])]:pr-0">
-                    <button
-                        type="button"
-                        onClick={() => navigate(`/record/${props.record._id}`)}
-                        className="inline-flex items-center rounded-lg bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                    >
-                        <LinkIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
-                        View
-                    </button>
-                    {
-                        isAdmin &&
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setSelectedRecord(props.record);
-                                setDisplayRecordDeleteDialog(true);
-                            }}
-                            className="inline-flex items-center rounded-lg bg-red-500 px-2 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-red-400 hover:bg-red-400"
-                        >
-                            <XCircleIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-white" aria-hidden="true" />
-                            Delete
-                        </button>
-                    }
-                </td>
+                {
+                    listCategories.map((category) => {
+                        if (category.value === "date") {
+                            return (
+                                <td key={category.value} className="h-16 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                    {formatDate(props.record.date)}
+                                </td>
+                            );
+                        } else if (category.name === "Actions") {
+                            return (
+                                <td key={category.value} className="h-16 space-x-2 items-center align-middle [&amp;:has([role=checkbox])]:pr-0">
+                                    <button
+                                        type="button"
+                                        onClick={() => navigate(`/record/${props.record._id}`)}
+                                        className="inline-flex items-center rounded-lg bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                                    >
+                                        <LinkIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                        View
+                                    </button>
+                                    {
+                                        isAdmin &&
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setSelectedRecord(props.record);
+                                                setDisplayRecordDeleteDialog(true);
+                                            }}
+                                            className="inline-flex items-center rounded-lg bg-red-500 px-2 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-red-400 hover:bg-red-400"
+                                        >
+                                            <XCircleIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-white" aria-hidden="true" />
+                                            Delete
+                                        </button>
+                                    }
+                                </td>
+                            );
+                            
+                        } else {
+                            return (
+                                <td key={category.value} className="h-16 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                    {props.record[category.value]}
+                                </td>
+                            );
+                        }
+                        
+                    })
+                } 
+                
             </tr>
         );
     }
@@ -188,17 +219,21 @@ export default function RecordsList() {
             <>
                 <div className="flex justify-between">
                     <h3 className="text-lg font-semibold p-4">Records</h3>
+                    <div className="p-4">
+                        <Searchbar setDisplay={setDisplayedRecords} full={records} categories={listCategories} />
+                    </div>
                     {
-                        
-                        <button
-                            className="inline-flex items-center rounded-lg bg-white my-2 mr-16 px-2 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                            onClick={() => {
-                                navigate('/record')
-                            }}
-                        >
-                            <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
-                            Add Record
-                        </button>
+                        <div className="p-2">
+                            <button
+                                className="inline-flex items-center rounded-lg bg-white my-2 mr-16 px-2 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                                onClick={() => {
+                                    navigate('/record')
+                                }}
+                            >
+                                <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                Add Record
+                            </button>
+                        </div>
 
                     }
                     
@@ -208,24 +243,15 @@ export default function RecordsList() {
                         <table className="w-full caption-bottom text-sm">
                             <thead className="[&amp;_tr]:border-b">
                                 <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                        Record ID
-                                    </th>
-                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                        Date
-                                    </th>
-                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                        By
-                                    </th>
-                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                        Branch
-                                    </th>
-                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                        Total Earnings
-                                    </th>
-                                    <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                        
-                                    </th>
+                                    {
+                                        listCategories.map((category) => {
+                                            return (
+                                                <th key={category.value} className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                                    {category.name}
+                                                </th>
+                                            );
+                                        })
+                                    }
                                 </tr>
                             </thead>
                             <tbody className="[&amp;_tr:last-child]:border-0">
