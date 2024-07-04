@@ -31,7 +31,6 @@ export function SignUpPage() {
         setForm((prev) => ({
             ...prev,
             username: "",
-            name:"",
             email:"",
             password: "",
             branch:"",
@@ -154,20 +153,6 @@ export function SignUpPage() {
                                         }
                                         className="block w-80 flex-1 rounded-md border-0 bg-transparent py-1.5 pl-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
                                     />
-                                </div>
-
-                                <div className="sm:col-span-6">
-                                    <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">Name:</label>
-                                        <input 
-                                            id="name"  
-                                            value={form.name}
-                                            required
-                                            onChange={e => {
-                                                    setForm(prev => ({...prev, name: e.target.value}))
-                                                }
-                                            }
-                                            className="block w-80 flex-1 rounded-md border-0 bg-transparent py-1.5 pl-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
-                                        />
                                 </div>
 
                                 <div className="sm:col-span-6">
