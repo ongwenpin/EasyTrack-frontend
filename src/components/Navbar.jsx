@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { logOutFailure, logOutStart, logOutSuccess } from '../redux/userSlice';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const navigation = [
     { name: 'Dashboard', href: '/', current: true },
@@ -30,6 +31,8 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
     navigation.forEach((item) => {
@@ -84,11 +87,11 @@ export default function Navbar() {
                 </div>
                 <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                   <div className="flex flex-shrink-0 items-center">
-                    <img
+                    {/* <img
                       className="h-8 w-auto"
                       src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                       alt="Your Company"
-                    />
+                    /> */}
                   </div>
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">
@@ -129,26 +132,16 @@ export default function Navbar() {
                       leaveTo="transform opacity-0 scale-95"
                     >
                       <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        {/* <MenuItem>
-                          {({ focus }) => (
-                            <a
-                              href="#"
-                              className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                            >
-                              Your Profile
-                            </a>
-                          )}
-                        </MenuItem>
                         <MenuItem>
                           {({ focus }) => (
                             <a
-                              href="#"
+                              href={`/user/${currentUser.username}`}
                               className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                             >
-                              Settings
+                              {currentUser.username}
                             </a>
                           )}
-                        </MenuItem> */}
+                        </MenuItem>
                         <MenuItem>
                           {({ focus }) => (
                             <a
