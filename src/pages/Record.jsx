@@ -265,6 +265,8 @@ export default function Record() {
                     },
                     withCredentials: true
                 });
+                setRecordId(response.data._id);
+                return response;
                 
             } else {
                 const formData = new FormData();
