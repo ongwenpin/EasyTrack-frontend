@@ -49,7 +49,7 @@ export default function RecordsList() {
             }
         });
         
-    }, []);
+    }, [records.length]);
 
     function listRecords() {
         if (displayedRecords.length === 0) {
@@ -133,6 +133,7 @@ export default function RecordsList() {
                 return fetchRecords();
             }).then((response) => {
                 setRecords(response.data);
+                setDisplayedRecords(response.data);
             });
         } catch (error) {
             console.error(error);

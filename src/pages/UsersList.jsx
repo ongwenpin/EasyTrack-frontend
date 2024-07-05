@@ -48,15 +48,15 @@ export function UsersList() {
                 listCategories.map((category) => {
                     if (category.value === "action") {
                         return (
-                            <td className="h-16 space-x-2 items-center align-middle [&amp;:has([role=checkbox])]:pr-0">
-                            <button
-                                type="button"
-                                onClick={() => navigate(`/user/${props.user.username}`)}
-                                className="inline-flex items-center rounded-lg bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                            >
-                                <LinkIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
-                                View
-                            </button>
+                            <td key={category.value} className="h-16 space-x-2 items-center align-middle [&amp;:has([role=checkbox])]:pr-0">
+                                <button
+                                    type="button"
+                                    onClick={() => navigate(`/user/${props.user.username}`)}
+                                    className="inline-flex items-center rounded-lg bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                                >
+                                    <LinkIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                    View
+                                </button>
                             
                             {isAdmin && props.user.username !== currentUser.username &&
                             
@@ -90,25 +90,27 @@ export function UsersList() {
         </tr>
     );
 
-    useEffect(() => {
-        async function fetchUsers() {
-            try {
-                const response = await axios.get("http://localhost:5050/api/users", {withCredentials: true});
-                return response;
-            } catch (error) {
-                if (error.response.status === 301) {
-                    navigate("/login");
-                    return;
-                }
-                console.error(error);
+    async function fetchUsers() {
+        try {
+            const response = await axios.get("http://localhost:5050/api/users", {withCredentials: true});
+            return response;
+        } catch (error) {
+            if (error.response.status === 301) {
+                navigate("/login");
+                return;
             }
+            console.error(error);
         }
+    }
+
+    useEffect(() => {
+        
         fetchUsers().then((response) => {
             setUserList(response.data);
             setDisplayUserList(response.data);
         });
 
-    }, []);
+    }, [userList.length]);
 
     function listUsers() {
         if (displayUserList.length === 0) {
