@@ -40,19 +40,17 @@ export async function getWeeklyProfits() {
 
 }
 
-
-
-export async function getMonthlyProfits() {
+// export async function getMonthlyProfits() {
     
-        try {
-            const response = await axios.get("http://localhost:5050/api/analytics/monthlyprofit", {withCredentials: true});
-            return response.data;
+//         try {
+//             const response = await axios.get("http://localhost:5050/api/analytics/monthlyprofit", {withCredentials: true});
+//             return response.data;
     
-        } catch (error) {
-            console.error(error);
-        }
+//         } catch (error) {
+//             console.error(error);
+//         }
     
-}
+// }
 
 export async function getAnnualProfits() {
 

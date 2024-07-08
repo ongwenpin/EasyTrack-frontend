@@ -1,10 +1,9 @@
-import { BarPlot, ChartsXAxis, ResponsiveChartContainer } from "@mui/x-charts";
+import { BarPlot, ChartsXAxis, ResponsiveChartContainer, ChartsTooltip } from "@mui/x-charts";
 import { getWeeklyProfits } from "../utils/analytics";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import Box from '@mui/material/Box';
 import { Paper } from "@mui/material";
-import { ChartsTooltip } from '@mui/x-charts';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import StackedBarChartIcon from '@mui/icons-material/StackedBarChart';
 

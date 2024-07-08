@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react"
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { PlusIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { CheckIcon } from '@heroicons/react/20/solid';
@@ -17,6 +17,8 @@ export default function Record() {
     const [isEditing, setIsEditing] = useState(false);
 
     const param = useParams();
+
+    const navigate = useNavigate();
 
     const [recordId, setRecordId] = useState("");
 
@@ -245,6 +247,17 @@ export default function Record() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const totalBreakdownEarnings = recordForm.earningBreakdown.reduce((acc, curr) => {
+            return acc + parseInt(curr.amount);
+        }, 0);
+
+        console.log(totalBreakdownEarnings);
+
+        if (totalBreakdownEarnings !== parseInt(recordForm.totalEarnings)) {
+            alert("Total earnings must match the sum of all earnings breakdown");
+            throw new Error("Total earnings must match the sum of all earnings breakdown");
+        }
         
         try {
             if (isNewRecord) {
@@ -349,13 +362,14 @@ export default function Record() {
                                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                                     onClick={() => {
                                         fetchRecord(recordId).then((record) => {
-                                            handleSetRecord(record);
+                                            navigate(`/record/${recordId}`);
+                                            if (isNewRecord) {
+                                                setIsNewRecord(false);
+                                            }
                                         }).catch((error) => {
                                             console.log(error);
                                         });
-                                        if (!isNewRecord) {
-                                            setIsEditing(false);
-                                        }
+                                        setIsEditing(false);
                                         setShowSubmitSuccess(false);
                                     }}
                                     data-autofocus
@@ -431,7 +445,7 @@ export default function Record() {
 
             <>
                 <form onSubmit={ (e) => {
-                    handleSubmit(e).then(() => {
+                    handleSubmit(e).then((res) => {
                         setShowSubmitSuccess(true);
                     }).catch((error) => {   
                         console.log(error);

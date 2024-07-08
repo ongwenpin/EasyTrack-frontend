@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 import { authenicateUser } from "../utils/auth";
 import { WeeklyProfitCard } from "../components/WeeklyProfitCard";
-//import { DailyProfitCard } from "../components/DailyProfitCard";
+import { DailyProfitCard } from "../components/DailyProfitCard";
 
 export function Dashboard() { 
     
@@ -44,15 +44,12 @@ export function Dashboard() {
                     
                 </div>
             }
-            <div className="grid grid-cols-5 gap-x-2 gap-y-2 border my-4 mx-8 p-4 bg-gray-200 rounded-lg">
-                <div className="col-span-1 border rounded-lg">
-
-                </div>
+            <div className="grid grid-cols-4 gap-x-2 gap-y-2 border my-4 mx-8 py-4 px-16 bg-gray-200 rounded-lg">
                 <div className="col-span-2 border bg-white rounded-lg">
                     <WeeklyProfitCard />
                 </div>
-                <div className="col-span-1 border bg-white rounded-lg">
-                    {/* <DailyProfitCard /> */}
+                <div className="col-span-2 border bg-white rounded-lg">
+                    <DailyProfitCard />
                 </div>
             </div>
             
