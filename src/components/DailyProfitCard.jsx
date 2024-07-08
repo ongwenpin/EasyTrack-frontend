@@ -21,7 +21,6 @@ export function DailyProfitCard() {
                 result.push({id:index,  value: data[key], label: key});
             }
         });
-        console.log(result);
         return result;
 
     }

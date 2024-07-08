@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 import { authenicateUser } from "../utils/auth";
 import { WeeklyProfitCard } from "../components/WeeklyProfitCard";
 import { DailyProfitCard } from "../components/DailyProfitCard";
+import GlobalSearchbar from "../components/GlobalSearchbar";
 
 export function Dashboard() { 
     
@@ -27,9 +28,18 @@ export function Dashboard() {
 
     return (
         <>
-            <div className="mt-2 ml-4 font-bold text-xl">
-                Welcome back {currentUser.username}
+            <div className="flex items-center w-full">
+                <div className="flex-1 mt-2 ml-4 font-bold text-xl">
+                    Welcome back {currentUser.username}
+                </div>
+                <div className="flex-1 mt-2">
+                    <GlobalSearchbar />
+                </div>
+                <div className="flex-1 invisible">
+                    Placeholder
+                </div>
             </div>
+            
             
             {
                 !verified &&
