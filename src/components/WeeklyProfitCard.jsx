@@ -66,7 +66,7 @@ export function WeeklyProfitCard() {
                             </div>
                             <div className="place-content-center">
                                 <button 
-                                    className="border border-gray-400 rounded-full mx-4"
+                                    className="border border-gray-400 rounded-full mx-4 hover:bg-gray-200 p-1"
                                     onClick={() => setIsSplit(!isSplit)}
                                 >
                                     {
