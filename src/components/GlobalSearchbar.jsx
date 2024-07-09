@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { formatDate } from "../utils/dateFormatter";
 
 function debounce(func, wait) {
     let timeout;
@@ -59,12 +60,12 @@ export default function GlobalSearchbar(props) {
 
             return (
                 <div 
-                    className="hover:bg-gray-100"
+                    className="hover:bg-gray-100 p-1"
                     onClick={() => {
-                        navigate(`/user/${props.username}`);
+                        navigate(`/user/${props.user.username}`);
                     }}
                 >
-                    {props.username}
+                    {props.user.username}
                 </div>
             )
 
@@ -72,12 +73,29 @@ export default function GlobalSearchbar(props) {
                 
                 return (
                     <div 
-                    className="hover:bg-gray-100"
+                    className="hover:bg-gray-100 p-1 text-sm"
                     onClick={() => {
-                        navigate(`/record/${props._id}`);
+                        navigate(`/record/${props.record._id}`);
                     }}
                 >
-                        {props._id}
+                        <div className="flex flex-col">
+                            <div>
+                                {props.record._id}
+                            </div>
+
+                            <div className="flex flex-row space-x-2">
+                                <div>
+                                    {props.record.username}
+                                </div>
+                                <div>
+                                    {props.record.branch}
+                                </div>
+                                <div>
+                                    {formatDate(props.record.date)}
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 )
         }
@@ -88,18 +106,23 @@ export default function GlobalSearchbar(props) {
         return (
             <div className="flex flex-col p-2">
                 <div className="flex flex-col">
-                    <h1 className="font-semibold">Users</h1>
+                    <div className="flex flex-row justify-between">
+                        <h1 className="font-semibold">Users</h1>
+                    </div>
                     {
                         searchResults.users.map((user) => {
-                            return <SearchResultCard type="user" username={user.username} />
+                            return <SearchResultCard key={user.username} type="user" user={user} />
                         })
                     }
                 </div>
                 <div className="flex flex-col">
-                    <h1 className="font-semibold">Records</h1>
+                    <div className="flex flex-row justify-between">
+                        <h1 className="font-semibold">Records</h1>
+                    </div>
+                    
                     {
                         searchResults.records.map((record) => {
-                            return <SearchResultCard type="record" _id={record._id} />
+                            return <SearchResultCard key={record._id} type="record" record={record} />
                         })
                     }
                 </div>
@@ -120,7 +143,7 @@ export default function GlobalSearchbar(props) {
 
                 {
                     displaySearchResults &&
-                    <div className="max-w-md sm:w-full sm:absolute sm:right-auto right-20 z-10 bg-white rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300">
+                    <div className="h-96 overflow-y-scroll max-w-md sm:w-full sm:absolute sm:right-auto right-20 z-10 bg-white rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300">
                         {listAllSearchResults()}
                     </div>
                 }
