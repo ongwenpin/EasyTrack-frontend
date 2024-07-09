@@ -120,7 +120,7 @@ export default function GlobalSearchbar(props) {
 
                 {
                     displaySearchResults &&
-                    <div className="max-w-md sm:w-full sm:fixed sm:right-auto right-20 z-10 bg-white rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300">
+                    <div className="max-w-md sm:w-full sm:absolute sm:right-auto right-20 z-10 bg-white rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300">
                         {listAllSearchResults()}
                     </div>
                 }
