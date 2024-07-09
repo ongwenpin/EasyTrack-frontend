@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import { Paper } from "@mui/material";
 import BarChartIcon from '@mui/icons-material/BarChart';
 import StackedBarChartIcon from '@mui/icons-material/StackedBarChart';
+import Tooltip from '@mui/material/Tooltip';
 
 export function WeeklyProfitCard() {
 
@@ -65,17 +66,20 @@ export function WeeklyProfitCard() {
                                 <div className="font-semibold text-xl p-2">{chartData.profit.reduce((acc, curr) => acc + curr, 0)}</div>
                             </div>
                             <div className="place-content-center">
-                                <button 
-                                    className="border border-gray-400 rounded-full mx-4 hover:bg-gray-200 p-1"
-                                    onClick={() => setIsSplit(!isSplit)}
-                                >
-                                    {
-                                        isSplit
-                                        ? <StackedBarChartIcon fontSize="large"/>
-                                        : <BarChartIcon fontSize="large"/>
-                                    }
-                                    
-                                </button>
+                                <Tooltip title={isSplit ? "Show normal" : "Show stacked"}>
+                                    <button 
+                                        className="border border-gray-400 rounded-full mx-4 hover:bg-gray-200 p-1"
+                                        onClick={() => setIsSplit(!isSplit)}
+                                        aria-label="Toggle Chart Type between Stacked and Normal Bar Chart"
+                                    >
+                                        {
+                                            isSplit
+                                            ? <BarChartIcon fontSize="large"/>
+                                            : <StackedBarChartIcon fontSize="large"/>
+                                        }
+                                        
+                                    </button>
+                                </Tooltip>
                             </div>
                             
                         </div>
