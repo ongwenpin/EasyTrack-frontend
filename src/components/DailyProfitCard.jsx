@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import { ResponsiveChartContainer, PiePlot, ChartsXAxis, ChartsTooltip, PieChart } from "@mui/x-charts";
 import { getDailyProfits } from "../utils/analytics";
 import { Paper } from "@mui/material";
+import { getAccessToken } from "../utils/auth";
 
 export function DailyProfitCard() {
 
@@ -28,10 +29,21 @@ export function DailyProfitCard() {
     useEffect(() => {
         setIsLoading(true);
         getDailyProfits().then((data) => {
-            setChartData(handleChartData(data));
-            setProfit(data.profit);
+            if (data) {
+                setChartData(handleChartData(data));
+                setProfit(data.profit);
+            }
         }).catch((error) => {
-            console.error(error);
+            if (error.message === "Access token expired") {
+                getAccessToken().then(() => {
+                    return getDailyProfits()
+                }).then((data) => {
+                    if (data) {
+                        setChartData(handleChartData(data));
+                        setProfit(data.profit);
+                    }
+                });
+            }
         }).finally(() => {
             setIsLoading(false);
         });

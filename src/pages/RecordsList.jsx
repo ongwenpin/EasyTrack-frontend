@@ -7,6 +7,7 @@ import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@
 import { ExclamationTriangleIcon, XCircleIcon} from "@heroicons/react/24/outline";
 import { useSelector } from 'react-redux';
 import Searchbar from '../components/Searchbar';
+import { getAccessToken } from '../utils/auth';
 
 export default function RecordsList() {
 
@@ -32,11 +33,12 @@ export default function RecordsList() {
            const response = await axios.get('http://localhost:5050/api/records', {withCredentials: true});
            return response;
         } catch (error) {
-            if (error.response.status == 401) {
-                navigate('/login');
-                return;
+            if (error.response.status == 401 && error.response.data === "Access token expired") {
+                throw new Error("Access token expired");
+                
             }
-            console.error(error);
+            navigate('/login');
+            return;
         }
     }
 
@@ -46,6 +48,17 @@ export default function RecordsList() {
             if (response) {
                 setRecords(response.data);
                 setDisplayedRecords(response.data);
+            }
+        }).catch((error) => {   
+            if (error.message === "Access token expired") {
+                getAccessToken().then(() => {
+                    return fetchRecords()
+                }).then((response) => {
+                    if (response) {
+                        setRecords(response.data);
+                        setDisplayedRecords(response.data);
+                    }
+                });
             }
         });
         

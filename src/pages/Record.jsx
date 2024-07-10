@@ -6,6 +6,7 @@ import { PlusIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { formatDate } from '../utils/dateFormatter';
+import { getAccessToken } from '../utils/auth';
 
 
 export default function Record() {
@@ -50,10 +51,12 @@ export default function Record() {
             });
             return response.data;
         } catch (error) {
-            if (error.response.status === 401) {
-                navigate('/login');
+            if (error.response.status == 401 && error.response.data === "Access token expired") {
+                throw new Error("Access token expired");
+                
             }
-            console.log(error);
+            navigate('/login');
+            return;
         }
     }
 
@@ -80,6 +83,17 @@ export default function Record() {
             if (record) {
                 handleSetRecord(record);
             }
+        }).catch((error) => {
+            if (error.message === "Access token expired") {
+                getAccessToken().then(() => {
+                    return fetchRecord(id)
+                }).then((record) => {
+                    if (record) {
+                        handleSetRecord(record);
+                    }
+                });
+            }
+
         });
 
     }, []);

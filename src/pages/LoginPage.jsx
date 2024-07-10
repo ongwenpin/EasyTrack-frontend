@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { logInStart, logInSuccess, logInFailure } from "../redux/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { getAccessToken } from "../utils/auth";
 
 export function LoginPage() {
 
@@ -28,6 +29,7 @@ export function LoginPage() {
                             dispatch(logInStart());
                             const response = await axios.post("http://localhost:5050/api/auth", form, {withCredentials: true});
                             dispatch(logInSuccess(response.data));
+                            const access_token_response = await getAccessToken();
                             // Redirect to previous page or dashboard
                             const redirect = searchParams.get("redirect");
                             if (redirect !== null) {

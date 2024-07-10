@@ -7,6 +7,7 @@ import { Paper } from "@mui/material";
 import BarChartIcon from '@mui/icons-material/BarChart';
 import StackedBarChartIcon from '@mui/icons-material/StackedBarChart';
 import Tooltip from '@mui/material/Tooltip';
+import { getAccessToken } from "../utils/auth";
 
 export function WeeklyProfitCard() {
 
@@ -19,10 +20,19 @@ export function WeeklyProfitCard() {
     useEffect(() => {
         setIsLoading(true);
         getWeeklyProfits().then((data) => {
-            setChartData(data);
-
+            if (data) {
+                setChartData(data);
+            }
         }).catch((error) => {
-            console.error(error);
+            if (error.message === "Access token expired") {
+                getAccessToken().then(() => {
+                    return getWeeklyProfits()
+                }).then((data) => {
+                    if (data) {
+                        setChartData(data);
+                    }
+                });
+            }
         }).finally(() => {
             setIsLoading(false);
         });

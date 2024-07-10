@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../utils/dateFormatter";
+import { getAccessToken } from "../utils/auth";
 
 function debounce(func, wait) {
     let timeout;
@@ -30,16 +31,33 @@ export default function GlobalSearchbar(props) {
             const response = await axios.get(`http://localhost:5050/api/search/?query=${query}`, { withCredentials: true });
             return response;
         } catch (error) {
-            console.error("Error fetching search results: ", error);
+            if (error.response.status == 401 && error.response.data === "Access token expired") {
+                throw new Error("Access token expired");
+                
+            }
+            navigate('/login');
+            return;
         }
     }
 
     const debouncedSearch = debounce((searchQuery) => {
         getSearchResult(searchQuery)
             .then((response) => {
-                setSearchResults(response.data);
+                if (response) {
+                    setSearchResults(response.data);
+                }
             })
             .catch((error) => {
+                if (error.message === "Access token expired") {
+                    getAccessToken().then(() => {
+                        return getSearchResult(searchQuery)
+                    }).then((response) => {
+                        if (response) {
+                            setSearchResults(response.data);
+                        }
+                    });
+                    return;
+                }
                 console.error("Error fetching search results: ", error);
             });
     }, 500);

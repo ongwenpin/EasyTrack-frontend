@@ -6,6 +6,7 @@ import { ExclamationTriangleIcon, XCircleIcon, PlusIcon } from "@heroicons/react
 import { useSelector } from "react-redux";
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import Searchbar from "../components/Searchbar";
+import { getAccessToken } from "../utils/auth";
 
 export function UsersList() {
 
@@ -95,19 +96,33 @@ export function UsersList() {
             const response = await axios.get("http://localhost:5050/api/users", {withCredentials: true});
             return response;
         } catch (error) {
-            if (error.response.status === 401) {
-                navigate("/login");
-                return;
+            if (error.response.status == 401 && error.response.data === "Access token expired") {
+                throw new Error("Access token expired");
+                
             }
-            console.error(error);
+            navigate('/login');
+            return;
         }
     }
 
     useEffect(() => {
         
         fetchUsers().then((response) => {
-            setUserList(response.data);
-            setDisplayUserList(response.data);
+            if (response) {
+                setUserList(response.data);
+                setDisplayUserList(response.data);
+            }
+        }).catch((error) => {
+            if (error.message === "Access token expired") {
+                getAccessToken().then(() => {
+                    return fetchUsers()
+                }).then((response) => {
+                    if (response) {
+                        setUserList(response.data);
+                        setDisplayUserList(response.data);
+                    }
+                });
+            }
         });
 
     }, [userList.length]);

@@ -21,6 +21,10 @@ export async function getDailyProfits() {
         return response.data;
 
     } catch (error) {
+        if (error.response.status == 401 && error.response.data === "Access token expired") {
+            throw new Error("Access token expired");
+            
+        }
         console.error(error);
     }
     
@@ -35,6 +39,10 @@ export async function getWeeklyProfits() {
         
 
     } catch (error) {
+        if (error.response.status == 401 && error.response.data === "Access token expired") {
+            throw new Error("Access token expired");
+            
+        }
         console.error(error);
     }
 

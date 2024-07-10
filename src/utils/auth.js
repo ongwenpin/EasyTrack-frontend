@@ -7,8 +7,17 @@ export async function authenicateUser() {
         if (response.status === 200) {
             return true;
         } 
-    } catch (error) {
-        //console.error(error);
         return false;
+    } catch (error) {
+        return false;
+    }
+}
+
+export async function getAccessToken() {
+    try {
+        const response = await axios.get("http://localhost:5050/api/auth/access", {withCredentials: true});
+        return response;
+    } catch (error) {
+        console.error(error);
     }
 }

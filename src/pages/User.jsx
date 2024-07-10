@@ -11,6 +11,7 @@ import { changeUsernameSuccess } from "../redux/userSlice";
 import { useSelector } from "react-redux";
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { formatDate } from "../utils/dateFormatter";
+import { getAccessToken } from "../utils/auth";
 
 export function User() {
 
@@ -52,11 +53,12 @@ export function User() {
             return user;
 
         } catch (error) {
-            if (error.response.status === 401) {
-                navigate("/login");
-                return;
+            if (error.response.status == 401 && error.response.data === "Access token expired") {
+                throw new Error("Access token expired");
+                
             }
-            console.error(error);
+            navigate("/login");
+            return;
         }
 
     }
@@ -73,6 +75,16 @@ export function User() {
         fetchUserData().then(user => {
             setForm(user);
             setOriginalUser(user.username);
+        }).catch(error => {
+            if (error.message === "Access token expired") {
+                getAccessToken().then(() => {
+                    return fetchUserData();
+                }).then((user) => {
+                    setForm(user);
+                    setOriginalUser(user.username);
+                })
+            }
+            
         });
 
     }, []);
