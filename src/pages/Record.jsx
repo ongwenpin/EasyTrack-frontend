@@ -50,7 +50,7 @@ export default function Record() {
             });
             return response.data;
         } catch (error) {
-            if (error.response.status === 301) {
+            if (error.response.status === 401) {
                 navigate('/login');
             }
             console.log(error);

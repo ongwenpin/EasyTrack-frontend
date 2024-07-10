@@ -11,6 +11,7 @@ import { persistor, store } from './redux/store.js';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { User } from './pages/User.jsx';
+import ProtectedRoutes from './components/ProtectedRoutes.jsx';
 import EmailVerificationPage from './pages/EmailVerificationPage.jsx';
 import RecordsList from './pages/RecordsList.jsx';
 import Record from './pages/Record.jsx';
@@ -18,8 +19,7 @@ import Record from './pages/Record.jsx';
 // If path unknown, redirect to some page
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App/>,
+    element: <ProtectedRoutes/>,
     children: [
       {
         path: "/",
@@ -55,10 +55,6 @@ const router = createBrowserRouter([
     path:"/login",
     element: <LoginPage/>
   },
-  {
-    path: "*",
-    element: <LoginPage/>
-  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

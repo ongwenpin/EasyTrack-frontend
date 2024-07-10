@@ -1,8 +1,5 @@
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
-import { authenicateUser } from "../utils/auth";
 import { WeeklyProfitCard } from "../components/WeeklyProfitCard";
 import { DailyProfitCard } from "../components/DailyProfitCard";
 import GlobalSearchbar from "../components/GlobalSearchbar";
@@ -10,21 +7,6 @@ import GlobalSearchbar from "../components/GlobalSearchbar";
 export function Dashboard() { 
     
     const { verified, currentUser } = useSelector((state) => state.user);
-
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        try {
-            authenicateUser().then((response) => {
-                if (!response) {
-                    navigate("/login");
-                }
-            });
-
-        } catch (error) {
-            console.error(error);
-        }
-    }, []);
 
     return (
         <>

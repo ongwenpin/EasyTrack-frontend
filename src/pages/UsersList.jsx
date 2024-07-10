@@ -95,7 +95,7 @@ export function UsersList() {
             const response = await axios.get("http://localhost:5050/api/users", {withCredentials: true});
             return response;
         } catch (error) {
-            if (error.response.status === 301) {
+            if (error.response.status === 401) {
                 navigate("/login");
                 return;
             }

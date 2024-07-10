@@ -14,19 +14,19 @@ export default function EmailVerificationPage() {
     const [success, setSuccess] = useState(false);
     const [sentVerification, setSentVerification] = useState(false);
 
-    useEffect(() => {
-        if (!hasCurrentUser) {
-            navigate(
-                {
-                    pathname: "/login",
-                    search: "?redirect=/verify/" + verify_key
-                }
-            );
-        } else if (verified) {
-            navigate("/");
-        }
+    // useEffect(() => {
+    //     if (!hasCurrentUser) {
+    //         navigate(
+    //             {
+    //                 pathname: "/login",
+    //                 search: "?redirect=/verify/" + verify_key
+    //             }
+    //         );
+    //     } else if (verified) {
+    //         navigate("/");
+    //     }
         
-    }, []);
+    // }, []);
 
     const verifyEmail = async () => {
 

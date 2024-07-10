@@ -52,7 +52,7 @@ export function User() {
             return user;
 
         } catch (error) {
-            if (error.response.status === 301) {
+            if (error.response.status === 401) {
                 navigate("/login");
                 return;
             }
