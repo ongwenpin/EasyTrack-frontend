@@ -193,7 +193,7 @@ export function User() {
                 }}>
                     <div className="border-b border-gray-900/10 pb-12 ml-7">
 
-                        <div className="flex justify-center mb-5 text-bold text-center">
+                        <div className="flex justify-center my-3 text-bold text-center">
                             <h2 className="text-base font-semibold leading-7 text-gray-900">User Profile</h2>
                         </div>
                         
