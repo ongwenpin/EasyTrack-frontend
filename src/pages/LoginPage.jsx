@@ -12,7 +12,7 @@ export function LoginPage() {
         password: "",
     });
 
-    const { error, hasError } = useSelector((state) => state.user);
+    const [error, setError] = useState("");
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -39,8 +39,7 @@ export function LoginPage() {
                             }
 
                         } catch (error) {
-                            dispatch(logInFailure(error.response.data.message));
-                            console.log(error.response.data);
+                            setError(error.response.data.message);
                         }
                         
                     }
@@ -89,7 +88,7 @@ export function LoginPage() {
                 </p>
             </div>
             <div>
-                {hasError && <p className="text-red-700 mt-5 text-center">{ error }</p> }
+                {error && <p className="text-red-700 mt-5 text-center">{ error }</p> }
             </div>
             
             

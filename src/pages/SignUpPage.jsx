@@ -22,8 +22,8 @@ export function SignUpPage() {
     const [signupSuccess, setSignupSuccess] = useState(false);
 
     const dispatch = useDispatch();
-
-    const {error} = useSelector((state) => state.user);
+    
+    const [error, setError] = useState("");
 
     const navigate = useNavigate();
 
@@ -129,9 +129,9 @@ export function SignUpPage() {
 
                     } catch (error) {
                         if (error.response.data.code === 11000) {
-                            dispatch(signUpFailure("Username already exists"));
+                            setError("Username already exists. Please choose another username.");
                         } else {
-                            dispatch(signUpFailure(error.response.data));
+                            setError(error.response.data.message);
                         }
                     }
                 }}>
