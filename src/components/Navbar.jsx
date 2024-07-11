@@ -47,7 +47,7 @@ export default function Navbar() {
   async function handleLogOut() {
     try {
       dispatch(logOutStart());
-      const response = await axios.get("http://localhost:5050/api/logout", {withCredentials: true});
+      const response = await axios.post("http://localhost:5050/api/logout", {username: currentUser.username}, {withCredentials: true});
       dispatch(logOutSuccess());
       navigate("/login");
     } catch (error) {

@@ -98,12 +98,10 @@ export function User() {
         try {
             if (isNewUser) {
                 const response = await axios.post("http://localhost:5050/api/users", form, {withCredentials: true});
-                console.log("User created successfully");
                 navigate("/user/" + form.username);
                 changeUsernameSuccess(form.username);
             } else {
                 const response = await axios.patch("http://localhost:5050/api/users/" + originalUser, form, {withCredentials: true});
-                console.log("User updated successfully");
                 if (originalUser !== form.username) {
                     navigate("/user/" + form.username);
                     changeUsernameSuccess(form.username);
@@ -155,7 +153,7 @@ export function User() {
                                     </DialogTitle>
                                     <div className="mt-2">
                                         <p className="text-sm text-gray-500">
-                                            {User} has been successfully {isNewUser ? "created" : "updated"}.
+                                            User has been successfully {isNewUser ? "created" : "updated"}.
                                         </p>
                                     </div>
                                     </div>
@@ -183,15 +181,17 @@ export function User() {
             </>
 
             <>
-                <form onSubmit={(e) => {
+                <form 
+                    onSubmit={(e) => {
                     handleSubmitUser(e).then(() => {
                         toggleEditingMode();
                         setShowSubmitSuccess(true);
                     }).catch(error => {
                         console.log(error);
                     });
+                    className="p-5"
                 }}>
-                    <div className="border-b border-gray-900/10 pb-12 ml-7">
+                    <div className="border-2 border-gray-900/10 p-10 pt-5 m-5 rounded-lg">
 
                         <div className="flex justify-center my-3 text-bold text-center">
                             <h2 className="text-base font-semibold leading-7 text-gray-900">User Profile</h2>
@@ -276,19 +276,37 @@ export function User() {
                                 />
                             </div>
 
-                            <div className="sm:col-span-2">
-                                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">Password:</label>
-                                <input 
-                                    id="password"  
-                                    value={form.password}
-                                    required
-                                    type="password"
+                            {
+                                isNewUser &&
+                                <div className="sm:col-span-2">
+                                    <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">Password:</label>
+                                    <input 
+                                        id="password"  
+                                        value={form.password}
+                                        required
+                                        type="password"
 
+                                        onChange={e => {
+                                                setForm(prev => ({...prev, password: e.target.value}))
+                                            }
+                                        }
+                                        className="block flex-1 rounded-md border-0 bg-transparent py-1.5 pl-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
+                                    />
+                                </div>
+                            }
+
+                            <div className="sm:col-span-2">
+                                <label htmlFor="dateofbirth" className="block text-sm font-medium leading-6 text-gray-900">Date of Birth:</label>
+                                <input 
+                                    id="dateofbirth"  
+                                    value={form.dateofbirth}
+                                    required
+                                    type="date"
                                     onChange={e => {
-                                            setForm(prev => ({...prev, password: e.target.value}))
+                                            setForm(prev => ({...prev, dateofbirth: e.target.value}))
                                         }
                                     }
-                                    className="block flex-1 rounded-md border-0 bg-transparent py-1.5 pl-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
+                                    className="block flex-1 border-0 rounded-md bg-transparent py-1.5 pl-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
                                 />
                             </div>
 
@@ -309,38 +327,13 @@ export function User() {
                                 </select>
                             </div>
 
-                            <div className="sm:col-span-2">
-                                <label htmlFor="dateofbirth" className="block text-sm font-medium leading-6 text-gray-900">Date of Birth:</label>
-                                <input 
-                                    id="dateofbirth"  
-                                    value={form.dateofbirth}
-                                    required
-                                    type="date"
-                                    onChange={e => {
-                                            setForm(prev => ({...prev, dateofbirth: e.target.value}))
-                                        }
-                                    }
-                                    className="block flex-1 border-0 rounded-md bg-transparent py-1.5 pl-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
-                                />
-                            </div>
+                            
                             
                             {
                                 !isNewUser && 
                                 <>
-                                    <div className="sm:col-span-2 flex flex-row items-center">
-                                        <label htmlFor="verified" className="block text-sm font-medium leading-6 text-gray-900 mr-2">Status:</label>
-                                        {form.verified
-                                            ? <h2 className="text-green-500 text-sm">
-                                                Verified
-                                            </h2>
-                                            : <h2 className="text-red-500 textsm">
-                                                Not Verified
-                                            </h2>
-                                        }
-                                    </div>
-
                                     <div className="sm:col-span-2">
-                                    <label htmlFor="role" className="block text-sm font-medium leading-6 text-gray-900">Role:</label>
+                                        <label htmlFor="role" className="block text-sm font-medium leading-6 text-gray-900">Role:</label>
                                         <select 
                                                 name="role" 
                                                 value={form.role}
@@ -352,6 +345,18 @@ export function User() {
                                             <option value="user">User</option>
                                         </select>
                                     </div>
+
+                                    <div className="sm:col-span-2 flex flex-row items-center">
+                                        <label htmlFor="verified" className="block text-sm font-medium leading-6 text-gray-900 mr-2">Status:</label>
+                                        {form.verified
+                                            ? <h2 className="text-green-500 text-sm">
+                                                Verified
+                                            </h2>
+                                            : <h2 className="text-red-500 textsm">
+                                                Not Verified
+                                            </h2>
+                                        }
+                                    </div>    
                                 </>
                             }
 

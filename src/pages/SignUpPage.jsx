@@ -128,8 +128,11 @@ export function SignUpPage() {
                         setSignupSuccess(prev => !prev);
 
                     } catch (error) {
-                        dispatch(signUpFailure(error.response.data));
-                        console.log(error.response.data);
+                        if (error.response.data.code === 11000) {
+                            dispatch(signUpFailure("Username already exists"));
+                        } else {
+                            dispatch(signUpFailure(error.response.data));
+                        }
                     }
                 }}>
                     <div className="space-y-12 my-3 mx-3">

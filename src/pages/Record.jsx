@@ -266,8 +266,6 @@ export default function Record() {
             return acc + parseInt(curr.amount);
         }, 0);
 
-        console.log(totalBreakdownEarnings);
-
         if (totalBreakdownEarnings !== parseInt(recordForm.totalEarnings)) {
             alert("Total earnings must match the sum of all earnings breakdown");
             throw new Error("Total earnings must match the sum of all earnings breakdown");
