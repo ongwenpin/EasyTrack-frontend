@@ -73,7 +73,7 @@ export function WeeklyProfitCard() {
                         <div className="flex flex-row justify-between space-x-2">
                             <div className="flex flex-col space-y-1">
                                 <div className="text-sm p-2">Weekly Profit</div>
-                                <div className="font-semibold text-xl p-2">{chartData.profit.reduce((acc, curr) => acc + curr, 0)}</div>
+                                <div className="font-semibold text-xl p-2">{chartData.profit && chartData.profit.reduce((acc, curr) => acc + curr, 0)}</div>
                             </div>
                             <div className="place-content-center">
                                 <Tooltip title={isSplit ? "Show normal" : "Show stacked"}>
@@ -95,21 +95,27 @@ export function WeeklyProfitCard() {
                         </div>
                     </Paper>
                     <Paper sx={{ width: "100%", height: 300}} elevation={3}>
-                        <ResponsiveChartContainer
-                            xAxis={[
-                                {
-                                    data: chartData.day,
-                                    scaleType: "band",
-                                    id: "x-axis-id",
-                                },
-                            ]}
-                            {...chartSetting}
-                            
-                        >
-                            <ChartsTooltip />
-                            <BarPlot />
-                            <ChartsXAxis position="bottom" axisId="x-axis-id" />
-                        </ResponsiveChartContainer>
+                        {chartData && chartData.day && chartData.day.length > 0 ? (
+                            <ResponsiveChartContainer
+                                xAxis={[
+                                    {
+                                        data: chartData.day,
+                                        scaleType: "band",
+                                        id: "x-axis-id",
+                                    },
+                                ]}
+                                {...chartSetting}
+                                
+                            >
+                                <ChartsTooltip />
+                                <BarPlot />
+                                <ChartsXAxis position="bottom" axisId="x-axis-id" />
+                            </ResponsiveChartContainer>
+                        ) : (
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                                No data available
+                            </div> 
+                        )}
                     </Paper>
 
                 </Box>

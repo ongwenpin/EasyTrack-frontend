@@ -63,6 +63,7 @@ export function DailyProfitCard() {
                             </div>
                         </Paper>
                         <Paper sx={{ width: "100%", height: 300, alignItems: "center", display: 'flex', justifyContent: 'center',}} elevation={3}>
+                            {chartData && chartData.length > 0 ? (
                             <PieChart
                                 series={[
                                     {
@@ -72,6 +73,9 @@ export function DailyProfitCard() {
                                 width={400}
                                 height={200}
                             />
+                            ) : (
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }} >No data available</div> 
+                            )}
                         </Paper>
 
                     </Box>
