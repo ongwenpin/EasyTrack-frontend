@@ -11,7 +11,7 @@ export function Dashboard() {
     return (
         <>
             <div className="flex items-center w-full">
-                <div className="flex-1 mt-2 ml-4 font-bold text-xl">
+                <div className="flex-1 mt-2 ml-4 font-bold text-2xl">
                     Welcome back {currentUser.username}
                 </div>
                 <div className="flex-1 mt-2">
