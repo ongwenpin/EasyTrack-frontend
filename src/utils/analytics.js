@@ -64,9 +64,14 @@ export async function getAnnualProfits() {
 
     try {
         const response = await axios.get("http://localhost:5050/api/analytics/annualprofit", {withCredentials: true});
-        return response.data;
+        const data = response.data;
+        return extractFields(data);
 
     } catch (error) {
+        if (error.response.status == 401 && error.response.data === "Access token expired") {
+            throw new Error("Access token expired");
+            
+        }
         console.error(error);
     }
 

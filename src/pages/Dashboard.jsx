@@ -3,6 +3,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 import { WeeklyProfitCard } from "../components/WeeklyProfitCard";
 import { DailyProfitCard } from "../components/DailyProfitCard";
 import GlobalSearchbar from "../components/GlobalSearchbar";
+import { AnnualProfitCard } from "../components/AnnualProfitCard";
 
 export function Dashboard() { 
     
@@ -42,6 +43,9 @@ export function Dashboard() {
                 </div>
                 <div className="col-span-2 border bg-white rounded-lg">
                     <DailyProfitCard />
+                </div>
+                <div className="col-span-4 border bg-white rounded-lg">
+                    <AnnualProfitCard />
                 </div>
             </div>
             

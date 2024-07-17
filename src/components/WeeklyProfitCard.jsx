@@ -69,8 +69,7 @@ export function WeeklyProfitCard() {
                 : <Box 
                     p={4}
                 >
-                    <Paper sx={{ width: "100%", marginBottom: 2}} elevation={3}>
-                        <div className="flex flex-row justify-between space-x-2">
+                    <div className="flex flex-row justify-between space-x-2 mb-4">
                             <div className="flex flex-col space-y-1">
                                 <div className="text-sm p-2">Weekly Profit</div>
                                 <div className="font-semibold text-xl p-2">{chartData.profit && chartData.profit.reduce((acc, curr) => acc + curr, 0)}</div>
@@ -93,7 +92,6 @@ export function WeeklyProfitCard() {
                             </div>
                             
                         </div>
-                    </Paper>
                     <Paper sx={{ width: "100%", height: 300}} elevation={3}>
                         {chartData && chartData.day && chartData.day.length > 0 ? (
                             <ResponsiveChartContainer
