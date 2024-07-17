@@ -49,10 +49,6 @@ export function DailyProfitCard() {
         });
     } , []);
 
-    useEffect(() => {
-        console.log(chartData);
-    }, [chartData]);
-
     return (
         <>
             {   
