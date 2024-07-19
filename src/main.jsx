@@ -15,6 +15,8 @@ import ProtectedRoutes from './components/ProtectedRoutes.jsx';
 import EmailVerificationPage from './pages/EmailVerificationPage.jsx';
 import RecordsList from './pages/RecordsList.jsx';
 import Record from './pages/Record.jsx';
+import Expense from './pages/Expense.jsx';
+import ExpenseList from './pages/ExpenseList.jsx';
 
 // If path unknown, redirect to some page
 const router = createBrowserRouter([
@@ -34,7 +36,7 @@ const router = createBrowserRouter([
         element: <User/>
       },
       {
-        path: "/verify/:verify_key",
+        path: "/verify/:verify_key?",
         element: <EmailVerificationPage/>
       },
       {
@@ -44,7 +46,16 @@ const router = createBrowserRouter([
       {
         path: "/record/:id?",
         element: <Record/>
+      },
+      {
+        path: "/expense/:id?",
+        element: <Expense/>
+      },
+      {
+        path: "/expenses",
+        element: <ExpenseList/>
       }
+      
     ]
   },
   {

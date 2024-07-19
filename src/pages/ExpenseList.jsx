@@ -9,29 +9,33 @@ import { useSelector } from 'react-redux';
 import Searchbar from '../components/Searchbar';
 import { getAccessToken } from '../utils/auth';
 
-export default function RecordsList() {
+export default function ExpenseList() {
 
     const { isAdmin } = useSelector((state) => state.user);
 
     const navigate = useNavigate();
 
-    const [records, setRecords] = useState([]);
+    const [expenses, setExpenses] = useState([]);
 
-    const [displayedRecords, setDisplayedRecords] = useState([]);
+    const [displayedExpenses, setDisplayedExpenses] = useState([]);
+
+    const [selectedExpense, setSelectedExpense] = useState(null);
+
+    const [displayExpenseDeleteDialog, setDisplayExpenseDeleteDialog] = useState(false);
 
     const listCategories = [
-        {name: 'Record ID', value: '_id', searchable: true}, 
-        {name: 'Date', value: 'date', searchable: false}, 
-        {name: 'By', value: 'username', searchable: true}, 
-        {name: 'Branch', value: 'branch', searchable: true}, 
-        {name: 'Total Earnings', value: 'totalEarnings', searchable: false},
-        {name: 'Actions', value: 'actions', searchable: false}
-    ];
+        { name: 'Expense ID', value: '_id', searchable: true},
+        { name: 'Date', value: 'date', searchable: false},
+        { name: 'By', value: 'username', searchable: true},
+        { name: 'Branch', value: 'branch', searchable: true}, 
+        { name: 'Amount', value: 'expenseAmount', searchable: false},
+        { name: 'Actions', value: 'actions', searchable: false}
+    ]
 
-    async function fetchRecords() {
+    async function fetchExpenses() {
         try {
-           const response = await axios.get('http://localhost:5050/api/records', {withCredentials: true});
-           return response;
+            const response = await axios.get('http://localhost:5050/api/expenses', {withCredentials: true});
+            return response
         } catch (error) {
             if (error.response.status == 401 && error.response.data === "Access token expired") {
                 throw new Error("Access token expired");
@@ -43,48 +47,41 @@ export default function RecordsList() {
     }
 
     useEffect(() => {
-        // Fetch records from the server
-        fetchRecords().then((response) => {
+        fetchExpenses().then((response) => {
             if (response) {
-                setRecords(response.data);
-                setDisplayedRecords(response.data);
+                setExpenses(response.data);
+                setDisplayedExpenses(response.data);
             }
-        }).catch((error) => {   
+        }).catch((error) => {
             if (error.message === "Access token expired") {
                 getAccessToken().then(() => {
-                    return fetchRecords()
+                    return fetchExpenses()
                 }).then((response) => {
                     if (response) {
-                        setRecords(response.data);
-                        setDisplayedRecords(response.data);
+                        setExpenses(response.data);
+                        setDisplayedExpenses(response.data);
                     }
                 });
             }
         });
-        
-    }, [records.length]);
+    }, [expenses.length]);
 
-    function listRecords() {
-        if (displayedRecords.length === 0) {
-            return (
-                <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                    <td colSpan={listCategories.length} className="h-16 px-4 text-center align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                        No records found
-                    </td>
-                </tr>
-            );
-        } else {
-            return displayedRecords.map((record) => {
-                return (
-                    <Record key={record._id} record={record}></Record>
-                );
+    const handleDeleteExpense = async (expenseId) => {
+        try {
+            const response = await axios.delete(`http://localhost:5050/api/expenses/${expenseId}`, {withCredentials: true}).then(() => {
+                return fetchExpenses();
+            }).then((response) => {
+                if (response) {
+                    setExpenses(response.data);
+                    setDisplayedExpenses(response.data);
+                }
             });
+        } catch (error) {
+            console.error(error);
         }
     }
 
-    const [selectedRecord, setSelectedRecord] = useState(null);
-
-    const Record = (props) => {
+    const Expense = (props) => {
         return (
             <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
                 {
@@ -92,7 +89,7 @@ export default function RecordsList() {
                         if (category.value === "date") {
                             return (
                                 <td key={category.value} className="h-16 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                    {formatDate(props.record.date)}
+                                    {formatDate(props.expense.date)}
                                 </td>
                             );
                         } else if (category.name === "Actions") {
@@ -100,7 +97,7 @@ export default function RecordsList() {
                                 <td key={category.value} className="h-16 space-x-2 items-center align-middle [&amp;:has([role=checkbox])]:pr-0">
                                     <button
                                         type="button"
-                                        onClick={() => navigate(`/record/${props.record._id}`)}
+                                        onClick={() => navigate(`/expense/${props.expense._id}`)}
                                         className="inline-flex items-center rounded-lg bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                                     >
                                         <LinkIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -111,8 +108,8 @@ export default function RecordsList() {
                                         <button
                                             type="button"
                                             onClick={() => {
-                                                setSelectedRecord(props.record);
-                                                setDisplayRecordDeleteDialog(true);
+                                                setSelectedExpense(props.expense);
+                                                setDisplayExpenseDeleteDialog(true);
                                             }}
                                             className="inline-flex items-center rounded-lg bg-red-500 px-2 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-red-400 hover:bg-red-400"
                                         >
@@ -126,7 +123,7 @@ export default function RecordsList() {
                         } else {
                             return (
                                 <td key={category.value} className="h-16 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                    {props.record[category.value]}
+                                    {props.expense[category.value]}
                                 </td>
                             );
                         }
@@ -138,27 +135,29 @@ export default function RecordsList() {
         );
     }
 
-    const [displayRecordDeleteDialog, setDisplayRecordDeleteDialog] = useState(false);
-
-    const handleDeleteRecord = async (id) => {
-        try {
-            const response = await axios.delete(`http://localhost:5050/api/records/${id}`, {withCredentials: true}).then(() => {
-                return fetchRecords();
-            }).then((response) => {
-                setRecords(response.data);
-                setDisplayedRecords(response.data);
+    function listExpenses() {
+        if (displayedExpenses.length === 0) {
+            return (
+                <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                    <td colSpan={listCategories.length} className="h-16 px-4 text-center align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                        No expenses found
+                    </td>
+                </tr>
+            );
+        } else {
+            return displayedExpenses.map((expense) => {
+                return (
+                    <Expense key={expense._id} expense={expense}></Expense>
+                );
             });
-        } catch (error) {
-            console.error(error);
         }
-
     }
 
     return (
         <>
             <>
-                <Transition show={displayRecordDeleteDialog}>
-                    <Dialog className="relative z-10" onClose={setDisplayRecordDeleteDialog}>
+                <Transition show={displayExpenseDeleteDialog}>
+                    <Dialog className="relative z-10" onClose={setDisplayExpenseDeleteDialog}>
                         <TransitionChild
                         enter="ease-out duration-300"
                         enterFrom="opacity-0"
@@ -188,11 +187,11 @@ export default function RecordsList() {
                                                 </div>
                                                 <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                                     <DialogTitle as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                                                        Remove {selectedRecord && selectedRecord._id} from records
+                                                        Remove {selectedExpense && selectedExpense._id} from records
                                                     </DialogTitle>
                                                 <div className="mt-2">
                                                     <p className="text-sm text-gray-500">
-                                                    Are you sure you want to remove {selectedRecord && selectedRecord._id}? All of the data in the record will be permanently removed. This action cannot be undone.
+                                                    Are you sure you want to remove {selectedExpense && selectedExpense._id}? All of the data in the record will be permanently removed. This action cannot be undone.
                                                     </p>
                                                 </div>
                                                 </div>
@@ -203,9 +202,9 @@ export default function RecordsList() {
                                             type="button"
                                             className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                                             onClick={() => {
-                                                handleDeleteRecord(selectedRecord._id).then(() => {
-                                                    setSelectedRecord(null);
-                                                    setDisplayRecordDeleteDialog(false);
+                                                handleDeleteExpense(selectedExpense._id).then(() => {
+                                                    setSelectedExpense(null);
+                                                    setDisplayExpenseDeleteDialog(false);
                                                 });
                                             }}
                                         >
@@ -215,8 +214,8 @@ export default function RecordsList() {
                                             type="button"
                                             className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                                             onClick={() => {
-                                                setSelectedRecord(null);
-                                                setDisplayRecordDeleteDialog(false);
+                                                setSelectedExpense(null);
+                                                setDisplayExpenseDeleteDialog(false);
                                             }}
                                             data-autofocus
                                         >
@@ -232,20 +231,20 @@ export default function RecordsList() {
             </>
             <>
                 <div className="flex justify-between">
-                    <h3 className="text-lg font-semibold p-4">Records</h3>
+                    <h3 className="text-lg font-semibold p-4">Expenses</h3>
                     <div className="p-4">
-                        <Searchbar setDisplay={setDisplayedRecords} full={records} categories={listCategories} />
+                        <Searchbar setDisplay={setDisplayedExpenses} full={expenses} categories={listCategories} />
                     </div>
                     {
                         <div className="p-2">
                             <button
                                 className="inline-flex items-center rounded-lg bg-white my-2 mr-16 px-2 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                                 onClick={() => {
-                                    navigate('/record')
+                                    navigate('/expense')
                                 }}
                             >
                                 <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
-                                Add Record
+                                Add Expense
                             </button>
                         </div>
 
@@ -269,7 +268,7 @@ export default function RecordsList() {
                                 </tr>
                             </thead>
                             <tbody className="[&amp;_tr:last-child]:border-0">
-                                {listRecords()}
+                                {listExpenses()}
                             </tbody>
                         </table>
                     </div>
@@ -277,6 +276,5 @@ export default function RecordsList() {
             </>
         </>
     )
-
 
 }
