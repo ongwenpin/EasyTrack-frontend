@@ -45,7 +45,7 @@ export function LoginPage() {
                     }
                 
                 }
-                className="mt-10 sm:mx-auto sm:w-full sm:max-w-md space-y-2"
+                className="mt-10 sm:mx-auto sm:w-full sm:max-w-md space-y-2 mx-2"
             >
                 <div>
                     <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">Username:</label>

@@ -9,7 +9,7 @@ import StackedBarChartIcon from '@mui/icons-material/StackedBarChart';
 import Tooltip from '@mui/material/Tooltip';
 import { getAccessToken } from "../utils/auth";
 
-export function WeeklyProfitCard() {
+export function WeeklyEarningCard() {
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -71,7 +71,7 @@ export function WeeklyProfitCard() {
                 >
                     <div className="flex flex-row justify-between space-x-2 mb-4">
                             <div className="flex flex-col space-y-1">
-                                <div className="text-sm p-2">Weekly Profit</div>
+                                <div className="text-sm p-2">Weekly Earning</div>
                                 <div className="font-semibold text-xl p-2">{chartData.profit && chartData.profit.reduce((acc, curr) => acc + curr, 0)}</div>
                             </div>
                             <div className="place-content-center">

@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
-import { WeeklyProfitCard } from "../components/WeeklyProfitCard";
-import { DailyProfitCard } from "../components/DailyProfitCard";
+import { WeeklyEarningCard } from "../components/WeeklyEarningCard";
+import { DailyEarningCard } from "../components/DailyEarningCard";
 import GlobalSearchbar from "../components/GlobalSearchbar";
 import { AnnualProfitCard } from "../components/AnnualProfitCard";
 
@@ -15,7 +15,7 @@ export function Dashboard() {
                 <div className="flex-1 mt-2 ml-4 font-bold text-2xl">
                     Welcome back {currentUser.username}
                 </div>
-                <div className="flex-1 mt-2">
+                <div className="flex-1 mt-2 z-10">
                     <GlobalSearchbar />
                 </div>
                 <div className="flex-1 invisible">
@@ -37,12 +37,12 @@ export function Dashboard() {
                     
                 </div>
             }
-            <div className="grid grid-cols-4 gap-x-2 gap-y-2 border my-4 mx-8 py-4 px-16 bg-gray-200 rounded-lg">
-                <div className="col-span-2 border bg-white rounded-lg">
-                    <WeeklyProfitCard />
+            <div className="grid grid-cols-4 gap-x-2 gap-y-2 border my-4 mx-8 py-4 sm:px-16 px-4 bg-gray-200 rounded-lg">
+                <div className="sm:col-span-2 col-span-4 border bg-white rounded-lg">
+                    <WeeklyEarningCard />
                 </div>
-                <div className="col-span-2 border bg-white rounded-lg">
-                    <DailyProfitCard />
+                <div className="sm:col-span-2 col-span-4 border bg-white rounded-lg">
+                    <DailyEarningCard />
                 </div>
                 <div className="col-span-4 border bg-white rounded-lg">
                     <AnnualProfitCard />
