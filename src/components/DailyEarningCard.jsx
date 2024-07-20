@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import Box from '@mui/material/Box';
 import { ResponsiveChartContainer, PiePlot, ChartsXAxis, ChartsTooltip, PieChart } from "@mui/x-charts";
-import { getDailyProfits } from "../utils/analytics";
+import { getDailyEarnings } from "../utils/analytics";
 import { Paper } from "@mui/material";
 import { getAccessToken } from "../utils/auth";
 
@@ -28,7 +28,7 @@ export function DailyEarningCard() {
 
     useEffect(() => {
         setIsLoading(true);
-        getDailyProfits().then((data) => {
+        getDailyEarnings().then((data) => {
             if (data) {
                 setChartData(handleChartData(data));
                 setProfit(data.profit);
@@ -36,7 +36,7 @@ export function DailyEarningCard() {
         }).catch((error) => {
             if (error.message === "Access token expired") {
                 getAccessToken().then(() => {
-                    return getDailyProfits()
+                    return getDailyEarnings()
                 }).then((data) => {
                     if (data) {
                         setChartData(handleChartData(data));

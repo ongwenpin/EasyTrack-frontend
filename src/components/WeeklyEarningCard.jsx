@@ -1,5 +1,5 @@
 import { BarPlot, ChartsXAxis, ResponsiveChartContainer, ChartsTooltip } from "@mui/x-charts";
-import { getWeeklyProfits } from "../utils/analytics";
+import { getWeeklyEarnings } from "../utils/analytics";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import Box from '@mui/material/Box';
@@ -19,14 +19,14 @@ export function WeeklyEarningCard() {
 
     useEffect(() => {
         setIsLoading(true);
-        getWeeklyProfits().then((data) => {
+        getWeeklyEarnings ().then((data) => {
             if (data) {
                 setChartData(data);
             }
         }).catch((error) => {
             if (error.message === "Access token expired") {
                 getAccessToken().then(() => {
-                    return getWeeklyProfits()
+                    return getWeeklyEarnings ()
                 }).then((data) => {
                     if (data) {
                         setChartData(data);

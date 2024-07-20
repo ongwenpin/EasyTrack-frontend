@@ -14,10 +14,10 @@ export function extractFields(data) {
     return result;
 }
 
-export async function getDailyProfits() {
+export async function getDailyEarnings() {
     
     try {
-        const response = await axios.get("http://localhost:5050/api/analytics/dailyprofit", {withCredentials: true});
+        const response = await axios.get("http://localhost:5050/api/analytics/dailyearning", {withCredentials: true});
         return response.data;
 
     } catch (error) {
@@ -30,10 +30,9 @@ export async function getDailyProfits() {
     
 }
 
-export async function getWeeklyProfits() {
-
+export async function getWeeklyEarnings() {
     try {
-        const response = await axios.get("http://localhost:5050/api/analytics/weeklyprofit", {withCredentials: true});
+        const response = await axios.get("http://localhost:5050/api/analytics/weeklyearning", {withCredentials: true});
         const data = response.data;
         return extractFields(data);
         
