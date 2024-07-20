@@ -24,7 +24,7 @@ export default function Searchbar(props) {
         }
 
         setIsLoading(false);
-    }, [searchQuery]);
+    }, [searchQuery, selectedCategory]);
 
     return (
         <>
