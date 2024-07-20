@@ -229,6 +229,7 @@ export default function ExpenseList() {
                     </Dialog>
                 </Transition>
             </>
+            
             <>
                 <div className="flex justify-between">
                     <h3 className="text-lg font-semibold p-4">Expenses</h3>
