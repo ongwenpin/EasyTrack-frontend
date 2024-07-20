@@ -26,7 +26,7 @@ export function WeeklyEarningCard() {
         }).catch((error) => {
             if (error.message === "Access token expired") {
                 getAccessToken().then(() => {
-                    return getWeeklyEarnings ()
+                    return getWeeklyEarnings()
                 }).then((data) => {
                     if (data) {
                         setChartData(data);
@@ -42,7 +42,7 @@ export function WeeklyEarningCard() {
 
         const profitBreakdown = []
         // get all keys but profit and day from an object
-        const keys = Object.keys(data).filter((key) => key !== 'profit' && key !== 'day');
+        const keys = Object.keys(data).filter((key) => key !== 'earning' && key !== 'day');
 
         keys.forEach((key) => {
             profitBreakdown.push({type: "bar", data: data[key], label: key, stack: "total"});
@@ -55,8 +55,8 @@ export function WeeklyEarningCard() {
         series: isSplit ? extractProfitBreakdown(chartData) : [
             {
                 type: "bar",
-                data: chartData.profit,
-                label: "Profit",
+                data: chartData.earning,
+                label: "Earning",
             },
         ],
 
@@ -72,7 +72,7 @@ export function WeeklyEarningCard() {
                     <div className="flex flex-row justify-between space-x-2 mb-4">
                             <div className="flex flex-col space-y-1">
                                 <div className="text-sm p-2">Weekly Earning</div>
-                                <div className="font-semibold text-xl p-2">{chartData.profit && chartData.profit.reduce((acc, curr) => acc + curr, 0)}</div>
+                                <div className="font-semibold text-xl p-2">{chartData.earning && chartData.earning.reduce((acc, curr) => acc + curr, 0)}</div>
                             </div>
                             <div className="place-content-center">
                                 <Tooltip title={isSplit ? "Show normal" : "Show stacked"}>
