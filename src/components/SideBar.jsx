@@ -13,22 +13,22 @@ export default function SideBar() {
 
     const location = useLocation();
 
-    const navigation = [
+    const [navigation, setNavigation] = useState([
         { name: 'Dashboard', href: '/', current: true, icon: HomeIcon },
         { name: 'Users', href: '/users', current: false, icon: UsersIcon },
         { name: 'Records', href: '/records', current: false, icon: ClipboardDocumentIcon },
         { name: 'Expenses', href: '/expenses', current: false, icon: CurrencyDollarIcon },
         { name: 'Profile', href: `/user/${currentUser.username}`, current: false, icon: UserIcon },
-    ];
+    ]);
 
     useEffect(() => {
-        navigation.forEach((item) => {
-          if (location.pathname === item.href) {
-            item.current = true;
-          } else {
-            item.current = false;
-          }
-        });
+        setNavigation(navigation.map(item => {
+            if (item.href === location.pathname) {
+                return { ...item, current: true };
+            } else {
+                return { ...item, current: false };
+            }
+        }));
       }, [location]);
     
     
@@ -49,7 +49,7 @@ export default function SideBar() {
                                     return (
                                         <div 
                                             key={item.name} 
-                                            className="p-2 flex flex-row text-white space-x-4 rounded-md hover:bg-gray-700"
+                                            className={`p-2 flex flex-row text-white space-x-4 rounded-md hover:bg-gray-700 ${item.current ? "bg-gray-700" : ""}`}
                                             onClick={() => navigate(item.href)}
                                         >
                                             <div className="">
