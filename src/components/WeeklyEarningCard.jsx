@@ -19,9 +19,10 @@ export function WeeklyEarningCard() {
 
     useEffect(() => {
         setIsLoading(true);
-        getWeeklyEarnings ().then((data) => {
+        getWeeklyEarnings().then((data) => {
             if (data) {
                 setChartData(data);
+                console.log(data);
             }
         }).catch((error) => {
             if (error.message === "Access token expired") {
@@ -40,15 +41,15 @@ export function WeeklyEarningCard() {
 
     function extractProfitBreakdown(data) {
 
-        const profitBreakdown = []
+        const earningBreakdown = []
         // get all keys but profit and day from an object
         const keys = Object.keys(data).filter((key) => key !== 'earning' && key !== 'day');
 
         keys.forEach((key) => {
-            profitBreakdown.push({type: "bar", data: data[key], label: key, stack: "total"});
+            earningBreakdown.push({type: "bar", data: data[key], label: key, stack: "total"});
         });
 
-        return profitBreakdown;
+        return earningBreakdown;
     }
 
     const chartSetting = {
@@ -72,7 +73,7 @@ export function WeeklyEarningCard() {
                     <div className="flex flex-row justify-between space-x-2 mb-4">
                             <div className="flex flex-col space-y-1">
                                 <div className="text-sm p-2">Weekly Earning</div>
-                                <div className="font-semibold text-xl p-2">{chartData.earning && chartData.earning.reduce((acc, curr) => acc + curr, 0)}</div>
+                                <div className="font-semibold text-xl p-2">{chartData.earning && `$${chartData.earning.reduce((acc, curr) => acc + curr, 0)}`}</div>
                             </div>
                             <div className="place-content-center">
                                 <Tooltip title={isSplit ? "Show normal" : "Show stacked"}>
@@ -103,7 +104,6 @@ export function WeeklyEarningCard() {
                                     },
                                 ]}
                                 {...chartSetting}
-                                
                             >
                                 <ChartsTooltip />
                                 <BarPlot />

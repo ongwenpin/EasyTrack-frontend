@@ -58,7 +58,7 @@ export function DailyEarningCard() {
                     <Box p={4}>
                     <div className="flex flex-col space-y-1 mb-4">
                                 <div className="text-sm p-2">Daily Earning</div>
-                                <div className="font-semibold text-xl p-2">{earning}</div>
+                                <div className="font-semibold text-xl p-2">{`$${earning}`}</div>
                             </div>
                         <Paper sx={{ width: "100%", height: 300, alignItems: "center", display: 'flex', justifyContent: 'center',}} elevation={3}>
                             {chartData && chartData.length > 0 ? (

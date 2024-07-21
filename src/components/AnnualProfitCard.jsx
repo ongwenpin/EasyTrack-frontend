@@ -11,6 +11,12 @@ export function AnnualProfitCard() {
 
     const [chartData, setChartData] = useState({});
 
+    const [chartDisplaySetting, setChartDisplaySetting] = useState({
+        revenue: true,
+        expense: true,
+        profit: true,
+    });
+
 
     useEffect(() => {
         setIsLoading(true);
@@ -33,15 +39,36 @@ export function AnnualProfitCard() {
         });
     },[]);
 
-    const chartSetting = {
-        series: [
+    function handleChartSeries() {
+        const series = [
+            {
+                type: "line",
+                data: chartData.earning,
+                label: "Revenue",
+                curve: "linear",
+                color: "#00FF00" // dark green
+            },
+            {
+                type: "line",
+                data: chartData.expense,
+                label: "Expense",
+                curve: "linear",
+                color: "#FF0000" // red
+            },
             {
                 type: "line",
                 data: chartData.profit,
                 label: "Profit",
                 curve: "linear",
-            },
-        ],
+                color: "#0000FF" // blue
+            }
+        ];
+
+        return series.filter((s) => chartDisplaySetting[s.label.toLowerCase()]);
+    }
+
+    const chartSetting = {
+        series: handleChartSeries(),
     }
 
     return (
@@ -53,7 +80,35 @@ export function AnnualProfitCard() {
                 >
                     <div className="flex flex-row justify-between space-x-2 mb-4">
                         <div className="text-lg p-2">Annual Profit</div>
-                        <div className="font-semibold text-xl p-2">{chartData.profit && chartData.profit.reduce((acc, curr) => acc + curr, 0)}</div>
+                        <div>
+                            <form className="flex flex-row space-x-2">
+                                <label className="p-2">
+                                    <input 
+                                        type="checkbox" 
+                                        checked={chartDisplaySetting.revenue} 
+                                        onChange={() => setChartDisplaySetting({...chartDisplaySetting, revenue: !chartDisplaySetting.revenue})}
+                                    />
+                                    <span className="pl-2">Revenue</span>
+                                </label>
+                                <label className="p-2">
+                                    <input 
+                                        type="checkbox" 
+                                        checked={chartDisplaySetting.expense} 
+                                        onChange={() => setChartDisplaySetting({...chartDisplaySetting, expense: !chartDisplaySetting.expense})}
+                                    />
+                                    <span className="pl-2">Expense</span>
+                                </label>
+                                <label className="p-2">
+                                    <input 
+                                        type="checkbox" 
+                                        checked={chartDisplaySetting.profit} 
+                                        onChange={() => setChartDisplaySetting({...chartDisplaySetting, profit: !chartDisplaySetting.profit})}
+                                    />
+                                    <span className="pl-2">Profit</span>
+                                </label>
+                            </form>
+                        </div>
+                        <div className="font-semibold text-xl p-2">{chartData.earning && chartData.earning.reduce((acc, curr) => acc + curr, 0)}</div>
                     </div>
                     <Paper sx={{ width: "100%", height: 300}} elevation={3}>
                         {chartData && chartData.month && chartData.month.length > 0 ? (
@@ -68,14 +123,14 @@ export function AnnualProfitCard() {
                                 yAxis={[
                                     {
                                         id: "y-axis-id",
-                                        data: chartData.profit
+                                        data: chartData.earning
                                     },
                                 ]}
                                 {...chartSetting}
                                 
                             >
                                 <ChartsTooltip />
-                                <ChartsGrid horizontal={true} vertical={true}/>
+                                <ChartsGrid horizontal={true} vertical={false}/>
                                 <LinePlot />
                                 <MarkPlot />
                                 <ChartsAxisHighlight x="line" />
