@@ -1,4 +1,4 @@
-
+import { ArrowTrendingUpIcon, ArrowTrendingDownIcon } from "@heroicons/react/24/outline";
 
 export default function StatisticsBox(props) {
 
@@ -14,8 +14,22 @@ export default function StatisticsBox(props) {
                     <div>
                         {
                             difference > 0
-                            ? <div className={`${reverse ? "text-red-600" : "text-green-600"} text-sm p-2`}>+{difference}%</div>
-                            : <div className={`${reverse ? "text-green-600" : "text-red-600"} text-sm p-2`}>{difference}%</div>
+                            ? <div className={`${reverse ? "text-red-600" : "text-green-600"} text-sm p-2 space-x-2`}>
+                                {
+                                    reverse 
+                                    ? <ArrowTrendingDownIcon className="h-4 w-4 inline mr-1" />
+                                    : <ArrowTrendingUpIcon className="h-4 w-4 inline mr-1" /> 
+                                }
+                                +{difference}%
+                            </div>
+                            : <div className={`${reverse ? "text-green-600" : "text-red-600"} text-sm p-2`}>
+                                {
+                                    reverse 
+                                    ? <ArrowTrendingUpIcon className="h-4 w-4 inline mr-1" />
+                                    : <ArrowTrendingDownIcon className="h-4 w-4 inline mr-1" />
+                                }
+                                {difference}%
+                            </div>
                         
                         }
                     </div>
