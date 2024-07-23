@@ -340,7 +340,6 @@ export function User() {
                                                 onChange={e => {setForm(prev => ({...prev, role: e.target.value}))}}
                                                 className="block flex-1 rounded-md border-0 py-1.5 pl-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:w-full sm:text-sm sm:leading-6"
                                         >
-                                            <option></option>
                                             <option value="admin">Admin</option>
                                             <option value="user">User</option>
                                         </select>
