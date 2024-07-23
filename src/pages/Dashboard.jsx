@@ -11,7 +11,7 @@ export function Dashboard() {
 
     return (
         <>
-            <div className="overflow-x-hidden h-lvh">
+            <div className="">
             
                 <div className="flex items-center w-full">
                     <div className="flex-1 mt-2 ml-4 font-bold text-2xl">

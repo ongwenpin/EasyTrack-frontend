@@ -7,18 +7,20 @@ function App() {
 
   return (
     <>
-      <Navbar/>
+      {/* <div className="sticky top-0 z-20">
+        <Navbar/>
+      </div> */}
       <div className="flex flex-row">
-        <div className="shrink">
+        <div className="shrink z-20">
           <SideBar/>
         </div>
-        <div className="grow">
+        <div className="grow flex flex-col">
+          <div className="sticky top-0 z-20">
+            <Navbar/>
+          </div>
           <Outlet/>
         </div>
-        
-        
       </div>
-      
     </>
   )
 }
