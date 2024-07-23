@@ -4,6 +4,7 @@ import { WeeklyEarningCard } from "../components/WeeklyEarningCard";
 import { DailyEarningCard } from "../components/DailyEarningCard";
 import GlobalSearchbar from "../components/GlobalSearchbar";
 import { AnnualProfitCard } from "../components/AnnualProfitCard";
+import DashboardStatistics from "../components/DashboardStatistics";
 
 export function Dashboard() { 
     
@@ -17,7 +18,7 @@ export function Dashboard() {
                     <div className="flex-1 mt-2 ml-4 font-bold text-2xl">
                         Welcome back {currentUser.username}
                     </div>
-                    <div className="flex-1 mt-2 z-10">
+                    <div className="flex-1 mt-4 z-10">
                         <GlobalSearchbar />
                     </div>
                     <div className="flex-1 invisible">
@@ -40,6 +41,9 @@ export function Dashboard() {
                     </div>
                 }
                 <div className="grid grid-cols-4 gap-x-2 gap-y-2 border my-4 mx-8 py-4 sm:px-16 px-4 bg-gray-200 rounded-lg">
+                    <div className="sm:col-span-4 border rounded-lg">
+                        <DashboardStatistics/>
+                    </div>
                     <div className="sm:col-span-2 col-span-4 border bg-white rounded-lg">
                         <WeeklyEarningCard />
                     </div>

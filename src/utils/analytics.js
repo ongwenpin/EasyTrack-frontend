@@ -14,10 +14,10 @@ export function extractFields(data) {
     return result;
 }
 
-export async function getDailyEarnings() {
+export async function getDailyEarnings(date) {
     
     try {
-        const response = await axios.get("http://localhost:5050/api/analytics/dailyearning", {withCredentials: true});
+        const response = await axios.get(`http://localhost:5050/api/analytics/dailyearning/${date}`, {withCredentials: true});
         return response.data;
 
     } catch (error) {
@@ -30,9 +30,10 @@ export async function getDailyEarnings() {
     
 }
 
-export async function getWeeklyEarnings() {
+export async function getWeeklyEarnings(date) {
+
     try {
-        const response = await axios.get("http://localhost:5050/api/analytics/weeklyearning", {withCredentials: true});
+        const response = await axios.get(`http://localhost:5050/api/analytics/weeklyearning/${date}`, {withCredentials: true});
         const data = response.data;
         return extractFields(data);
         
@@ -47,17 +48,17 @@ export async function getWeeklyEarnings() {
 
 }
 
-// export async function getMonthlyProfits() {
+export async function getMonthlyProfits(month, year) {
+        console.log(month, year);
+        try {
+            const response = await axios.get(`http://localhost:5050/api/analytics/monthlyprofit/?month=${month}&year=${year}`, {withCredentials: true});
+            return response.data;
     
-//         try {
-//             const response = await axios.get("http://localhost:5050/api/analytics/monthlyprofit", {withCredentials: true});
-//             return response.data;
+        } catch (error) {
+            console.error(error);
+        }
     
-//         } catch (error) {
-//             console.error(error);
-//         }
-    
-// }
+}
 
 export async function getAnnualProfits() {
 

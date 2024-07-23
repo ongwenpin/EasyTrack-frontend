@@ -19,7 +19,8 @@ export function WeeklyEarningCard() {
 
     useEffect(() => {
         setIsLoading(true);
-        getWeeklyEarnings().then((data) => {
+        const date = new Date();
+        getWeeklyEarnings(date).then((data) => {
             if (data) {
                 setChartData(data);
             }
@@ -71,7 +72,7 @@ export function WeeklyEarningCard() {
                 >
                     <div className="flex flex-row justify-between space-x-2 mb-4">
                             <div className="flex flex-col space-y-1">
-                                <div className="text-sm p-2">Weekly Earning</div>
+                                <div className="text-sm p-2">Weekly Earning Breakdown</div>
                                 <div className="font-semibold text-xl p-2">{chartData.earning && `$${chartData.earning.reduce((acc, curr) => acc + curr, 0)}`}</div>
                             </div>
                             <div className="place-content-center">

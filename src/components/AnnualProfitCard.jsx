@@ -12,7 +12,7 @@ export function AnnualProfitCard() {
     const [chartData, setChartData] = useState({});
 
     const [chartDisplaySetting, setChartDisplaySetting] = useState({
-        revenue: true,
+        earning: true,
         expense: true,
         profit: true,
     });
@@ -44,7 +44,7 @@ export function AnnualProfitCard() {
             {
                 type: "line",
                 data: chartData.earning,
-                label: "Revenue",
+                label: "Earning",
                 curve: "linear",
                 color: "#00FF00" // dark green
             },
@@ -85,10 +85,10 @@ export function AnnualProfitCard() {
                                 <label className="p-2">
                                     <input 
                                         type="checkbox" 
-                                        checked={chartDisplaySetting.revenue} 
+                                        checked={chartDisplaySetting.earning} 
                                         onChange={() => setChartDisplaySetting({...chartDisplaySetting, revenue: !chartDisplaySetting.revenue})}
                                     />
-                                    <span className="pl-2">Revenue</span>
+                                    <span className="pl-2">Earning</span>
                                 </label>
                                 <label className="p-2">
                                     <input 
@@ -108,7 +108,7 @@ export function AnnualProfitCard() {
                                 </label>
                             </form>
                         </div>
-                        <div className="font-semibold text-xl p-2">{chartData.earning && chartData.earning.reduce((acc, curr) => acc + curr, 0)}</div>
+                        <div className="font-semibold text-xl p-2">${chartData.earning && chartData.earning.reduce((acc, curr) => acc + curr, 0)}</div>
                     </div>
                     <Paper sx={{ width: "100%", height: 300}} elevation={3}>
                         {chartData && chartData.month && chartData.month.length > 0 ? (
