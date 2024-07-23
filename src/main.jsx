@@ -17,6 +17,7 @@ import RecordsList from './pages/RecordsList.jsx';
 import Record from './pages/Record.jsx';
 import Expense from './pages/Expense.jsx';
 import ExpenseList from './pages/ExpenseList.jsx';
+import SettingsPage from './pages/SettingsPage.jsx';
 
 // If path unknown, redirect to some page
 const router = createBrowserRouter([
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "/expenses",
         element: <ExpenseList/>
+      },
+      {
+        path: "settings",
+        element: <SettingsPage/>
       }
       
     ]
