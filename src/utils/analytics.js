@@ -49,7 +49,6 @@ export async function getWeeklyEarnings(date) {
 }
 
 export async function getMonthlyProfits(month, year) {
-        console.log(month, year);
         try {
             const response = await axios.get(`http://localhost:5050/api/analytics/monthlyprofit/?month=${month}&year=${year}`, {withCredentials: true});
             return response.data;
