@@ -299,7 +299,7 @@ export default function Expense() {
                             <div className="border-b border-gray-900/10 pb-12">
                         
                                 <div className="flex justify-around my-5 text-bold text-center items-center p-2">
-                                    <h2 className="text-lg font-semibold leading-7 text-gray-900">{isNewExpense ? "New Expense" : `Expense: ${expenseId}`}</h2>
+                                    <h2 className="text-xl font-semibold leading-7 text-gray-900">{isNewExpense ? "New Expense" : `Expense: ${expenseId}`}</h2>
                                 </div>
 
                                 <div className="flex justify-center space-x-5 my-5 text-bold text-center items-center p-2">

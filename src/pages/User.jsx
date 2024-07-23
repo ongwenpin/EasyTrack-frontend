@@ -194,7 +194,7 @@ export function User() {
                     <div className="border-2 border-gray-900/10 p-10 pt-5 m-5 rounded-lg">
 
                         <div className="flex justify-center my-3 text-bold text-center">
-                            <h2 className="text-base font-semibold leading-7 text-gray-900">User Profile</h2>
+                            <h2 className="text-xl font-semibold leading-7 text-gray-900">User Profile</h2>
                         </div>
                         
 

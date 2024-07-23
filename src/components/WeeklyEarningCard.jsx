@@ -22,7 +22,6 @@ export function WeeklyEarningCard() {
         getWeeklyEarnings().then((data) => {
             if (data) {
                 setChartData(data);
-                console.log(data);
             }
         }).catch((error) => {
             if (error.message === "Access token expired") {

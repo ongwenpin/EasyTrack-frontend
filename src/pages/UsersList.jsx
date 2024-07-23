@@ -224,7 +224,7 @@ export function UsersList() {
         
             <>
                 <div className="flex justify-between">
-                    <h3 className="text-lg font-semibold p-4">Users</h3>
+                    <h3 className="text-xl font-semibold p-4">Users</h3>
                     <div className="p-4">
                         <Searchbar setDisplay={setDisplayUserList} full={userList} categories={listCategories} />
                     </div>

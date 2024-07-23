@@ -232,7 +232,7 @@ export default function RecordsList() {
             </>
             <>
                 <div className="flex justify-between">
-                    <h3 className="text-lg font-semibold p-4">Records</h3>
+                    <h3 className="text-xl font-semibold p-4">Records</h3>
                     <div className="p-4">
                         <Searchbar setDisplay={setDisplayedRecords} full={records} categories={listCategories} />
                     </div>
