@@ -22,7 +22,10 @@ const ProtectedRoutes = () => {
     },[]);
     
     return  isLoading 
-        ? <Loading/> 
+        ? <div className="flex align-middle sm:h-20 sm:my-40 mb-10 h-8">
+            <Loading/> 
+        </div> 
+        
         : isAuthenticated
             ? <App/> 
             : <Navigate to="/login"/>;

@@ -74,7 +74,9 @@ export function AnnualProfitCard() {
     return (
         <>
             {isLoading 
-                ? <Loading />
+                ? <div className="flex align-middle sm:h-20 sm:my-40 mb-10 h-8">
+                    <Loading />
+                </div>
                 : <Box 
                     p={4}
                 >
@@ -86,7 +88,7 @@ export function AnnualProfitCard() {
                                     <input 
                                         type="checkbox" 
                                         checked={chartDisplaySetting.earning} 
-                                        onChange={() => setChartDisplaySetting({...chartDisplaySetting, revenue: !chartDisplaySetting.revenue})}
+                                        onChange={() => setChartDisplaySetting(prev => ({...prev, earning: !prev.earning}))}
                                     />
                                     <span className="pl-2">Earning</span>
                                 </label>
@@ -94,7 +96,7 @@ export function AnnualProfitCard() {
                                     <input 
                                         type="checkbox" 
                                         checked={chartDisplaySetting.expense} 
-                                        onChange={() => setChartDisplaySetting({...chartDisplaySetting, expense: !chartDisplaySetting.expense})}
+                                        onChange={() => setChartDisplaySetting(prev => ({...prev, expense: !prev.expense}))}
                                     />
                                     <span className="pl-2">Expense</span>
                                 </label>
@@ -102,7 +104,7 @@ export function AnnualProfitCard() {
                                     <input 
                                         type="checkbox" 
                                         checked={chartDisplaySetting.profit} 
-                                        onChange={() => setChartDisplaySetting({...chartDisplaySetting, profit: !chartDisplaySetting.profit})}
+                                        onChange={() => setChartDisplaySetting(prev => ({...prev, profit: !prev.profit}))}
                                     />
                                     <span className="pl-2">Profit</span>
                                 </label>

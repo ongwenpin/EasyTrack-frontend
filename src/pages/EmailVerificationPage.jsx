@@ -68,7 +68,9 @@ export default function EmailVerificationPage() {
                             ? <>
                                 {
                                     isLoading
-                                    ? <Loading/>
+                                    ? <div className="flex align-middle sm:h-28 mb-10 h-8">
+                                        <Loading />
+                                    </div>
                                     : (success
                                         ? <>
                                             <div className="flex flex-col space-x-4">

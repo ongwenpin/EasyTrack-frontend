@@ -66,7 +66,9 @@ export function WeeklyEarningCard() {
     return (
         <>
             {isLoading 
-                ? <Loading />
+                ? <div className="flex align-middle sm:h-20 sm:my-40 mb-10 h-8">
+                    <Loading />
+                </div>
                 : <Box 
                     p={4}
                 >

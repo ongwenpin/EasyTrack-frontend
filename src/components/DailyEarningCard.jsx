@@ -54,7 +54,9 @@ export function DailyEarningCard() {
         <>
             {   
                 isLoading
-                ? <Loading />
+                ? <div className="flex align-middle sm:h-20 sm:my-40 mb-10 h-8">
+                    <Loading />
+                </div>
                 : <>
                     <Box p={4}>
                     <div className="flex flex-col space-y-1 mb-4">
