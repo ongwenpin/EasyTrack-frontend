@@ -133,7 +133,7 @@ export default function Navbar() {
             
             {
               showNotification &&
-              <div className="absolute z-20 origin-top-right right-10 p-2 sm:w-96 bg-white rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <div className="absolute z-20 origin-top-right right-10 p-2 sm:w-96 bg-white rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-auto max-h-96">
                 <div className="flex flex-col">
 
                   <div className="flex flex-1 flex-row justify-between">
