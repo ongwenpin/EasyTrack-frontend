@@ -38,7 +38,7 @@ export default function SideBar() {
         <>
             <div className="bg-gray-800 px-2 py-4 h-full min-h-lvh max-w-44">
                 
-                <div className="flex flex-col space-y-4 sticky top-0">
+                <div className="flex flex-col space-y-6 sticky top-0">
                     
                         <div className="text-white font-semibold text-lg p-2 text-center">
                             {isOpen && "EasyTrack"}
