@@ -1,12 +1,11 @@
 import { useEffect, useState, useRef } from "react"
 import { useSelector } from "react-redux";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import { PlusIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { formatDate } from '../utils/dateFormatter';
-import { getAccessToken } from '../utils/auth';
+import { getAccessToken } from '../api/authApi';
+import { getExpense, createExpense, updateExpense } from "../api/expenseApi";
 
 export default function Expense() {
 
@@ -41,9 +40,9 @@ export default function Expense() {
         supportingImageUrl: ""
     });
 
-    async function fetchExpense(id) {
+    async function fetchExistingExpense(id) {
         try {
-            const response = await axios.get(`http://localhost:5050/api/expenses/${id}`, {withCredentials: true});
+            const response = await getExpense(id);
             return response.data;
         } catch (error) {
             if (error.response.status == 401 && error.response.data === "Access token expired") {
@@ -96,14 +95,14 @@ export default function Expense() {
         }
         setExpenseId(id);
         setIsNewExpense(false);
-        fetchExpense(id).then((expense) => {
+        fetchExistingExpense(id).then((expense) => {
             if (expense) {
                 handleSetExpense(expense);
             }
         }).catch((error) => {
             if (error.message === "Access token expired") {
                 getAccessToken().then(() => {
-                    return fetchExpense(id)
+                    return fetchExistingExpense(id)
                 }).then((expense) => {
                     if (expense) {
                         handleSetExpense(expense);
@@ -131,21 +130,11 @@ export default function Expense() {
             formData.append("supportingImageUrl", expenseForm.supportingImageUrl);
 
             if (isNewExpense) {
-                const response = await axios.post("http://localhost:5050/api/expenses", formData, {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "multipart/form-data"
-                    }
-                });
+                const response = await createExpense(formData);
                 setExpenseId(response.data._id);
                 return response;
             } else {
-                const response = await axios.patch(`http://localhost:5050/api/expenses/${expenseId}`, formData, {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "multipart/form-data"
-                    }
-                });
+                const response = await updateExpense(expenseId, formData);
             }
 
         } catch (error) {
@@ -261,7 +250,7 @@ export default function Expense() {
                                     type="button"
                                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                                     onClick={() => {
-                                        fetchExpense(expenseId).then((expense) => {
+                                        fetchExistingExpense(expenseId).then((expense) => {
                                             navigate(`/expense/${expenseId}`);
                                             if (isNewExpense) {
                                                 setIsNewExpense(false);
@@ -330,7 +319,7 @@ export default function Expense() {
                                             type="button"
                                             className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                                             onClick={() => {
-                                                fetchExpense(param.id).then((expense) => {
+                                                fetchExistingExpense(param.id).then((expense) => {
                                                     setExpenseForm(expense);
                                                 }).catch((error) => {
                                                     console.log(error);

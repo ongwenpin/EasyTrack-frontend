@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { logInStart, logInSuccess, logInFailure } from "../redux/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { getAccessToken } from "../utils/auth";
+import { getAccessToken } from "../api/authApi";
 
 export function LoginPage() {
 

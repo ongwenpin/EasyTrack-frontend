@@ -1,5 +1,5 @@
 import StatisticsBox from './StatisticsBox';
-import { getDailyEarnings, getWeeklyEarnings, getMonthlyProfits } from '../utils/analytics';
+import { getDailyEarnings, getWeeklyEarnings, getMonthlyProfits } from '../api/analyticsApi';
 import { useState, useEffect } from 'react';
 import Loading from "./Loading";
 

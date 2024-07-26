@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from "react"
 import { useSelector } from "react-redux";
-import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { PlusIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { formatDate } from '../utils/dateFormatter';
-import { getAccessToken } from '../utils/auth';
+import { getAccessToken } from '../api/authApi';
+import { getRecord, createRecord, updateRecord } from '../api/recordApi';
 
 
 export default function Record() {
@@ -46,9 +46,7 @@ export default function Record() {
 
     async function fetchRecord(id) {
         try {
-            const response = await axios.get(`http://localhost:5050/api/records/${id}`, {
-                withCredentials: true
-            });
+            const response = await getRecord(id);
             return response.data;
         } catch (error) {
             if (error.response.status == 401 && error.response.data === "Access token expired") {
@@ -284,12 +282,7 @@ export default function Record() {
                     formData.append(`earningBreakdown-supportingImage-${index}`, earning.supportingImage);
                 });
                 formData.append("earningBreakdownLength", recordForm.earningBreakdown.length);
-                const response = await axios.post("http://localhost:5050/api/records", formData, {
-                    headers: {
-                    'Content-Type': 'multipart/form-data',
-                    },
-                    withCredentials: true
-                });
+                const response = await createRecord(formData);
                 setRecordId(response.data._id);
                 return response;
                 
@@ -308,13 +301,7 @@ export default function Record() {
                 });
                 formData.append("earningBreakdownLength", recordForm.earningBreakdown.length);
                 formData.append("remarks", recordForm.remarks);
-                const response = await axios.patch(`http://localhost:5050/api/records/${recordId}`, formData, {
-                    headers: {
-                    'Content-Type': 'multipart/form-data',
-                    },
-                    withCredentials: true
-                });
-                
+                const response = await updateRecord(recordId, formData);
             }
             
 

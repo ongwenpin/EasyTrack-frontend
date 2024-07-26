@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../utils/dateFormatter";
-import { getAccessToken } from "../utils/auth";
+import { getAccessToken } from "../api/authApi";
 
 function debounce(func, wait) {
     let timeout;

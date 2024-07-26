@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import Box from '@mui/material/Box';
 import { ResponsiveChartContainer, PiePlot, ChartsXAxis, ChartsTooltip, PieChart } from "@mui/x-charts";
-import { getDailyEarnings } from "../utils/analytics";
+import { getDailyEarnings } from "../api/analyticsApi";
 import { Paper } from "@mui/material";
-import { getAccessToken } from "../utils/auth";
+import { getAccessToken } from "../api/authApi";
 
 export function DailyEarningCard() {
 

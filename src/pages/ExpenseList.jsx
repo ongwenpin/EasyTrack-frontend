@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { PlusIcon, LinkIcon } from '@heroicons/react/20/solid';
 import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../utils/dateFormatter';
@@ -7,7 +6,8 @@ import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@
 import { ExclamationTriangleIcon, XCircleIcon} from "@heroicons/react/24/outline";
 import { useSelector } from 'react-redux';
 import Searchbar from '../components/Searchbar';
-import { getAccessToken } from '../utils/auth';
+import { getAccessToken } from '../api/authApi';
+import { getExpenses, deleteExpense } from '../api/expenseApi';
 
 export default function ExpenseList() {
 
@@ -32,9 +32,9 @@ export default function ExpenseList() {
         { name: 'Actions', value: 'actions', searchable: false}
     ]
 
-    async function fetchExpenses() {
+    async function getAllExpenses() {
         try {
-            const response = await axios.get('http://localhost:5050/api/expenses', {withCredentials: true});
+            const response = await getExpenses();
             return response
         } catch (error) {
             if (error.response.status == 401 && error.response.data === "Access token expired") {
@@ -47,7 +47,7 @@ export default function ExpenseList() {
     }
 
     useEffect(() => {
-        fetchExpenses().then((response) => {
+        getAllExpenses().then((response) => {
             if (response) {
                 setExpenses(response.data);
                 setDisplayedExpenses(response.data);
@@ -55,7 +55,7 @@ export default function ExpenseList() {
         }).catch((error) => {
             if (error.message === "Access token expired") {
                 getAccessToken().then(() => {
-                    return fetchExpenses()
+                    return getAllExpenses()
                 }).then((response) => {
                     if (response) {
                         setExpenses(response.data);
@@ -68,12 +68,23 @@ export default function ExpenseList() {
 
     const handleDeleteExpense = async (expenseId) => {
         try {
-            const response = await axios.delete(`http://localhost:5050/api/expenses/${expenseId}`, {withCredentials: true}).then(() => {
-                return fetchExpenses();
-            }).then((response) => {
-                if (response) {
-                    setExpenses(response.data);
-                    setDisplayedExpenses(response.data);
+            await deleteExpense(expenseId).then(() => {
+                return getAllExpenses();
+            }).then((data) => {
+                if (data) {
+                    setExpenses(data.data);
+                    setDisplayedExpenses(data.data);
+                }
+            }).catch((error) => {
+                if (error.response.status == 401 && error.response.data === "Access token expired") {
+                    getAccessToken().then(() => {
+                        return handleDeleteExpense(expenseId);
+                    }).then((data) => {
+                        if (data) {
+                            setExpenses(data.data);
+                            setDisplayedExpenses(data.data);
+                        }
+                    });
                 }
             });
         } catch (error) {

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import {
     CheckIcon,
@@ -11,7 +10,8 @@ import { changeUsernameSuccess } from "../redux/userSlice";
 import { useSelector } from "react-redux";
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { formatDate } from "../utils/dateFormatter";
-import { getAccessToken } from "../utils/auth";
+import { getAccessToken } from "../api/authApi";
+import { getUser, createUser, updateUser } from "../api/userApi";
 
 export function User() {
 
@@ -42,10 +42,8 @@ export function User() {
     async function fetchUserData() {
 
         try {
-            const username = params.username;
-        
-            const link = `http://localhost:5050/api/users/` + username;
-            const response = await axios.get(link, {withCredentials: true});
+            const username = params.username; 
+            const response = await getUser(username);
             
             const formattedDate = formatDate(response.data.dateofbirth);
 
@@ -97,11 +95,11 @@ export function User() {
         e.preventDefault();
         try {
             if (isNewUser) {
-                const response = await axios.post("http://localhost:5050/api/users", form, {withCredentials: true});
+                const response = await createUser(form);
                 navigate("/user/" + form.username);
                 changeUsernameSuccess(form.username);
             } else {
-                const response = await axios.patch("http://localhost:5050/api/users/" + originalUser, form, {withCredentials: true});
+                const response = await updateUser(originalUser, form);
                 if (originalUser !== form.username) {
                     navigate("/user/" + form.username);
                     changeUsernameSuccess(form.username);
@@ -183,14 +181,15 @@ export function User() {
             <>
                 <form 
                     onSubmit={(e) => {
-                    handleSubmitUser(e).then(() => {
-                        toggleEditingMode();
-                        setShowSubmitSuccess(true);
-                    }).catch(error => {
-                        console.log(error);
-                    });
+                        handleSubmitUser(e).then(() => {
+                            toggleEditingMode();
+                            setShowSubmitSuccess(true);
+                        }).catch(error => {
+                            console.log(error);
+                        });
+                    }}
                     className="p-5"
-                }}>
+                >
                     <div className="border-2 border-gray-900/10 p-10 pt-5 m-5 rounded-lg">
 
                         <div className="flex justify-center my-3 text-bold text-center">

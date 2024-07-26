@@ -1,5 +1,5 @@
 import { BarPlot, ChartsXAxis, ResponsiveChartContainer, ChartsTooltip } from "@mui/x-charts";
-import { getWeeklyEarnings } from "../utils/analytics";
+import { getWeeklyEarnings } from "../api/analyticsApi";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
 import Box from '@mui/material/Box';
@@ -7,7 +7,7 @@ import { Paper } from "@mui/material";
 import BarChartIcon from '@mui/icons-material/BarChart';
 import StackedBarChartIcon from '@mui/icons-material/StackedBarChart';
 import Tooltip from '@mui/material/Tooltip';
-import { getAccessToken } from "../utils/auth";
+import { getAccessToken } from "../api/authApi";
 
 export function WeeklyEarningCard() {
 

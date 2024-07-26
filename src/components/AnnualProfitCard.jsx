@@ -3,8 +3,8 @@ import { ChartsGrid, LinePlot, LineHighlightPlot, MarkPlot, ChartsYAxis, ChartsX
 import Box from '@mui/material/Box';
 import { Paper } from "@mui/material";
 import Loading from "./Loading";
-import { getAccessToken } from "../utils/auth";
-import { getAnnualProfits } from "../utils/analytics";
+import { getAccessToken } from "../api/authApi";
+import { getAnnualProfits } from "../api/analyticsApi";
 
 export function AnnualProfitCard() {
     const [isLoading, setIsLoading] = useState(true);

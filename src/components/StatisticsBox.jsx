@@ -8,7 +8,7 @@ export default function StatisticsBox(props) {
 
     return (
         <>
-            <div className="p-2 flex flex-row justify-evenly group bg-white overflow-x-visible">
+            <div className="p-2 flex flex-row justify-between group bg-white overflow-x-visible">
                 <div className="flex flex-col">
                     <div className="text-sm p-2">{title}</div>
                     {

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate} from "react-router-dom";
 import { LinkIcon } from "@heroicons/react/20/solid";
 import { ExclamationTriangleIcon, XCircleIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import Searchbar from "../components/Searchbar";
-import { getAccessToken } from "../utils/auth";
+import { getAccessToken } from "../api/authApi";
+import { getUsers, deleteUser } from "../api/userApi";
 
 export function UsersList() {
 
@@ -30,7 +30,7 @@ export function UsersList() {
 
     const handleDeleteUser = async (username) => {
         try {
-            await axios.delete(`http://localhost:5050/api/users/${username}`, {withCredentials: true}).then(() => {
+            await deleteUser(username).then(() => {
                 setUserList(userList.filter(user => user.username !== username));
             });
             return;
@@ -39,8 +39,6 @@ export function UsersList() {
         }
 
     };
-
-    
 
     // Use for table in UsersList
     const UserRecord = (props) => (
@@ -93,7 +91,7 @@ export function UsersList() {
 
     async function fetchUsers() {
         try {
-            const response = await axios.get("http://localhost:5050/api/users", {withCredentials: true});
+            const response = await getUsers();
             return response;
         } catch (error) {
             if (error.response.status == 401 && error.response.data === "Access token expired") {

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { PlusIcon, LinkIcon } from '@heroicons/react/20/solid';
 import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../utils/dateFormatter';
@@ -7,7 +6,8 @@ import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@
 import { ExclamationTriangleIcon, XCircleIcon} from "@heroicons/react/24/outline";
 import { useSelector } from 'react-redux';
 import Searchbar from '../components/Searchbar';
-import { getAccessToken } from '../utils/auth';
+import { getAccessToken } from '../api/authApi';
+import { getRecords, deleteRecord } from '../api/recordApi';
 
 export default function RecordsList() {
 
@@ -30,7 +30,7 @@ export default function RecordsList() {
 
     async function fetchRecords() {
         try {
-           const response = await axios.get('http://localhost:5050/api/records', {withCredentials: true});
+           const response = await getRecords();
            return response;
         } catch (error) {
             if (error.response.status == 401 && error.response.data === "Access token expired") {
@@ -142,7 +142,7 @@ export default function RecordsList() {
 
     const handleDeleteRecord = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:5050/api/records/${id}`, {withCredentials: true}).then(() => {
+            const response = await deleteRecord(id).then(() => {
                 return fetchRecords();
             }).then((response) => {
                 setRecords(response.data);
