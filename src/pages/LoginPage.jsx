@@ -4,6 +4,7 @@ import axios from "axios";
 import { logInStart, logInSuccess, logInFailure } from "../redux/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken } from "../api/authApi";
+import { apiConfig } from "../api/apiConfig";
 
 export function LoginPage() {
 
@@ -17,6 +18,8 @@ export function LoginPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [searchParams, setSearchParams] = useSearchParams();
+
+    console.log(apiConfig.apiUrl);
 
     return (
         <>
