@@ -7,7 +7,7 @@
     "dev": "vite --mode dev",
     "build": "vite build --mode prod",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview --mode prod"
   },
   "dependencies": {
     "@emailjs/browser": "^4.3.3",
