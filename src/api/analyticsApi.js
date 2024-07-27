@@ -1,4 +1,7 @@
 import axios from "axios";
+import { apiConfig } from "../api/apiConfig";
+
+const API_URL = apiConfig.apiUrl + "/api/analytics";
 
 export function extractFields(data) {
     const result = {};
@@ -17,7 +20,7 @@ export function extractFields(data) {
 export async function getDailyEarnings(date) {
     
     try {
-        const response = await axios.get(`http://localhost:5050/api/analytics/dailyearning/${date}`, {withCredentials: true});
+        const response = await axios.get(`${API_URL}/dailyearning/${date}`, {withCredentials: true});
         return response.data;
 
     } catch (error) {
@@ -33,7 +36,7 @@ export async function getDailyEarnings(date) {
 export async function getWeeklyEarnings(date) {
 
     try {
-        const response = await axios.get(`http://localhost:5050/api/analytics/weeklyearning/${date}`, {withCredentials: true});
+        const response = await axios.get(`${API_URL}/weeklyearning/${date}`, {withCredentials: true});
         const data = response.data;
         return extractFields(data);
         
@@ -49,20 +52,20 @@ export async function getWeeklyEarnings(date) {
 }
 
 export async function getMonthlyProfits(month, year) {
-        try {
-            const response = await axios.get(`http://localhost:5050/api/analytics/monthlyprofit/?month=${month}&year=${year}`, {withCredentials: true});
-            return response.data;
-    
-        } catch (error) {
-            console.error(error);
-        }
+    try {
+        const response = await axios.get(`${API_URL}/monthlyprofit/?month=${month}&year=${year}`, {withCredentials: true});
+        return response.data;
+
+    } catch (error) {
+        console.error(error);
+    }
     
 }
 
 export async function getAnnualProfits() {
 
     try {
-        const response = await axios.get("http://localhost:5050/api/analytics/annualprofit", {withCredentials: true});
+        const response = await axios.get(`${API_URL}/annualprofit`, {withCredentials: true});
         const data = response.data;
         return extractFields(data);
 

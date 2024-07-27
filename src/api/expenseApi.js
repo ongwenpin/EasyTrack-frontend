@@ -1,7 +1,7 @@
 import axios from "axios";
+import { apiConfig } from "./apiConfig";
 
-
-const API_URL = "http://localhost:5050/api/expenses";
+const API_URL = apiConfig.apiUrl + "/api/expenses";
 
 export async function getExpenses() {
 
@@ -16,7 +16,7 @@ export async function getExpenses() {
 
 export async function getExpense(id) {
     try {
-        const response = await axios.get(`http://localhost:5050/api/expenses/${id}`, {withCredentials: true});
+        const response = await axios.get(`${API_URL}/${id}`, {withCredentials: true});
         return response;
     } catch (error) {
         throw error;
@@ -25,7 +25,12 @@ export async function getExpense(id) {
 
 export async function createExpense(formdata) {
     try {
-        const response = await axios.post(API_URL, formdata, {withCredentials: true});
+        const response = await axios.post(API_URL, formdata, {
+            withCredentials: true,
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        });
         return response;
     } catch (error) {
         throw error;

@@ -1,7 +1,7 @@
 import axios from "axios";
+import { apiConfig } from "../api/apiConfig";
 
-
-const API_URL = "http://localhost:5050/api/users";
+const API_URL = apiConfig.apiUrl + "/api/users";
 
 export async function getUser(username) {
     

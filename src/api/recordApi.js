@@ -1,6 +1,7 @@
 import axios from "axios";
+import { apiConfig } from "./apiConfig";
 
-const API_URL = "http://localhost:5050/api/records";
+const API_URL = apiConfig.apiUrl + "/api/records";
 
 export async function getRecords() {
 
