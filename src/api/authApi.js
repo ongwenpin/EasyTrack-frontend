@@ -3,6 +3,15 @@ import { apiConfig } from "../api/apiConfig";
 
 const API_URL = apiConfig.apiUrl + "/api/auth";
 
+export async function loginUser(user) {
+    try {
+        const response = await axios.post(`${API_URL}`, user, { withCredentials: true });
+        return response;
+    } catch (error) {
+        return error.response;
+    }
+}
+
 export async function authenicateUser() {
     try {
         const response = await axios.get(`${API_URL}/status`, { withCredentials: true });

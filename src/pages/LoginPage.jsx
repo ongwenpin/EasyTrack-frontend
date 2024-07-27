@@ -1,10 +1,9 @@
 import { useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom";
-import axios from "axios";
-import { logInStart, logInSuccess, logInFailure } from "../redux/userSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { logInStart, logInSuccess} from "../redux/userSlice";
+import { useDispatch } from "react-redux";
 import { getAccessToken } from "../api/authApi";
-import { apiConfig } from "../api/apiConfig";
+import { loginUser } from "../api/authApi";
 
 export function LoginPage() {
 
@@ -19,8 +18,6 @@ export function LoginPage() {
     const dispatch = useDispatch();
     const [searchParams, setSearchParams] = useSearchParams();
 
-    console.log(apiConfig.apiUrl);
-
     return (
         <>
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -30,7 +27,7 @@ export function LoginPage() {
                         e.preventDefault();
                         try {
                             dispatch(logInStart());
-                            const response = await axios.post("http://localhost:5050/api/auth", form, {withCredentials: true});
+                            const response = await loginUser(form);
                             dispatch(logInSuccess(response.data));
                             const access_token_response = await getAccessToken();
                             // Redirect to previous page or dashboard

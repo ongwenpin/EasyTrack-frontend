@@ -1,10 +1,10 @@
 import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
-import { signUpFailure, signUpStart, signUpSuccess } from "../redux/userSlice";
+import { useDispatch } from "react-redux";
+import { signUpStart, signUpSuccess } from "../redux/userSlice";
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { signupUser } from "../api/signupApi";
 
 export function SignUpPage() {
 
@@ -122,7 +122,7 @@ export function SignUpPage() {
                     e.preventDefault();
                     try {
                         dispatch(signUpStart());
-                        const response = await axios.post("http://localhost:5050/api/signup", form);
+                        const response = await signupUser(form);
                         console.log("User created successfully");
                         dispatch(signUpSuccess());
                         setSignupSuccess(prev => !prev);
