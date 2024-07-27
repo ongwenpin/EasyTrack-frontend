@@ -6,11 +6,12 @@ import {
   MenuItems,
   Transition,
 } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon, BellIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, BellIcon } from '@heroicons/react/24/outline';
 import { useDispatch, useSelector } from "react-redux";
 import { logOutFailure, logOutStart, logOutSuccess } from '../redux/userSlice';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../api/authApi';
+import { getUserNotifications, markNotificationAsRead, clearUserNotifications } from '../api/notificationApi';
 
 const navigation = [
     { name: 'Dashboard', href: '/', current: true },
@@ -55,7 +56,7 @@ export default function Navbar() {
   async function handleLogOut() {
     try {
       dispatch(logOutStart());
-      const response = await axios.post("http://localhost:5050/api/logout", {username: currentUser.username}, {withCredentials: true});
+      const response = await logout(currentUser.username);
       dispatch(logOutSuccess());
       navigate("/login");
     } catch (error) {
@@ -67,7 +68,8 @@ export default function Navbar() {
 
   async function getNotifications() {
     try {
-      const response = await axios.get(`http://localhost:5050/api/notification/${currentUser.username}`, {withCredentials: true});
+      //const response = await axios.get(`http://localhost:5050/api/notification/${currentUser.username}`, {withCredentials: true});
+      const response = await getUserNotifications(currentUser.username);
       return response;
     } catch (error) {
       console.error(error.response.data);
@@ -84,7 +86,8 @@ export default function Navbar() {
 
   async function markAsRead(notification) {
     try {
-      const response = await axios.patch(`http://localhost:5050/api/notification/${notification._id}`, {isRead: true}, {withCredentials: true});
+      //const response = await axios.patch(`http://localhost:5050/api/notification/${notification._id}`, {isRead: true}, {withCredentials: true});
+      const response = await markNotificationAsRead(notification);
       return response;
     } catch (error) {
       console.error(error.response.data);
@@ -93,7 +96,8 @@ export default function Navbar() {
 
   async function clearNotifications() {
     try {
-      const response = await axios.delete(`http://localhost:5050/api/notification/${currentUser.username}`, {withCredentials: true});
+      //const response = await axios.delete(`http://localhost:5050/api/notification/${currentUser.username}`, {withCredentials: true});
+      const response = await clearUserNotifications(currentUser.username);
     } catch (error) {
       console.error(error.response.data);
     }

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../utils/dateFormatter";
 import { getAccessToken } from "../api/authApi";
+import { getQuery } from "../api/searchApi";
 
 function debounce(func, wait) {
     let timeout;
@@ -28,7 +28,7 @@ export default function GlobalSearchbar(props) {
 
     async function getSearchResult(query) {
         try {
-            const response = await axios.get(`http://localhost:5050/api/search/?query=${query}`, { withCredentials: true });
+            const response = await getQuery(query);
             return response;
         } catch (error) {
             if (error.response.status == 401 && error.response.data === "Access token expired") {

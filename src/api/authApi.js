@@ -32,3 +32,12 @@ export async function getAccessToken() {
         console.error(error);
     }
 }
+
+export async function logout(username) {
+    try {
+        const response = await axios.post(`${API_URL}/logout`, {username: username}, { withCredentials: true });
+        return response;
+    } catch (error) {
+        console.error(error);
+    }
+}
