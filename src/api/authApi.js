@@ -8,7 +8,7 @@ export async function loginUser(user) {
         const response = await axios.post(`${API_URL}`, user, { withCredentials: true });
         return response;
     } catch (error) {
-        return error.response;
+        throw error;
     }
 }
 
@@ -29,7 +29,7 @@ export async function getAccessToken() {
         const response = await axios.get(`${API_URL}/access`, { withCredentials: true });
         return response;
     } catch (error) {
-        console.error(error);
+        throw error;
     }
 }
 
@@ -38,6 +38,6 @@ export async function logout(username) {
         const response = await axios.post(`${API_URL}/logout`, {username: username}, { withCredentials: true });
         return response;
     } catch (error) {
-        console.error(error);
+        throw error;
     }
 }

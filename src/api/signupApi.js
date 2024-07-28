@@ -8,6 +8,6 @@ export async function signupUser(user) {
         const response = await axios.post(`${API_URL}`, user);
         return response;
     } catch (error) {
-        return error.response;
+        throw error;
     }
 }

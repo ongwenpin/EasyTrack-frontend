@@ -28,7 +28,7 @@ export async function getDailyEarnings(date) {
             throw new Error("Access token expired");
             
         }
-        console.error(error);
+        throw error;
     }
     
 }
@@ -46,7 +46,7 @@ export async function getWeeklyEarnings(date) {
             throw new Error("Access token expired");
             
         }
-        console.error(error);
+        throw error;
     }
 
 }
@@ -57,7 +57,7 @@ export async function getMonthlyProfits(month, year) {
         return response.data;
 
     } catch (error) {
-        console.error(error);
+        throw error;
     }
     
 }
@@ -74,7 +74,7 @@ export async function getAnnualProfits() {
             throw new Error("Access token expired");
             
         }
-        console.error(error);
+        throw error;
     }
 
 }

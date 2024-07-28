@@ -8,6 +8,6 @@ export async function getQuery(query) {
         const response = await axios.get(`${API_URL}/?query=${query}`, { withCredentials: true });
         return response;
     } catch (error) {
-        console.error(error.response.data);
+        throw error;
     }
 }

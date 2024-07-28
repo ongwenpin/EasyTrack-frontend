@@ -68,7 +68,6 @@ export default function Navbar() {
 
   async function getNotifications() {
     try {
-      //const response = await axios.get(`http://localhost:5050/api/notification/${currentUser.username}`, {withCredentials: true});
       const response = await getUserNotifications(currentUser.username);
       return response;
     } catch (error) {
@@ -86,7 +85,6 @@ export default function Navbar() {
 
   async function markAsRead(notification) {
     try {
-      //const response = await axios.patch(`http://localhost:5050/api/notification/${notification._id}`, {isRead: true}, {withCredentials: true});
       const response = await markNotificationAsRead(notification);
       return response;
     } catch (error) {
@@ -96,7 +94,6 @@ export default function Navbar() {
 
   async function clearNotifications() {
     try {
-      //const response = await axios.delete(`http://localhost:5050/api/notification/${currentUser.username}`, {withCredentials: true});
       const response = await clearUserNotifications(currentUser.username);
     } catch (error) {
       console.error(error.response.data);
