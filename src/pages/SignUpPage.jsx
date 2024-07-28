@@ -1,10 +1,11 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signUpStart, signUpSuccess } from "../redux/userSlice";
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { signupUser } from "../api/signupApi";
+import { getBranches } from "../api/branchApi";
 
 export function SignUpPage() {
 
@@ -40,6 +41,16 @@ export function SignUpPage() {
         }));
         setSignupSuccess(prev => !prev);
     };
+
+    const [branches, setBranches] = useState([]);
+
+    useEffect(() => {
+        getBranches().then((response) => {
+            setBranches(response.data);
+        }).catch((error) => {
+            console.error(error)
+        });
+    }, []);
 
     return (
         <>
@@ -200,10 +211,11 @@ export function SignUpPage() {
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:w-full sm:text-sm sm:leading-6"
                                         >
                                             <option></option>
-                                            <option value="woodlands">Woodlands</option>
-                                            <option value="jurong">Jurong</option>
-                                            <option value="tampines">Tampines</option>
-                                            <option value="cbd">CBD</option>
+                                            {
+                                                branches.map((branch) => {
+                                                    return <option key={branch._id} value={branch.branchName}>{branch.branchName}</option>
+                                                })
+                                            }
                                         </select>
                                     </div>
                                 </div>

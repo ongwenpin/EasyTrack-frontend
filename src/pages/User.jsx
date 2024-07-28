@@ -12,6 +12,7 @@ import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@
 import { formatDate } from "../utils/dateFormatter";
 import { getAccessToken } from "../api/authApi";
 import { getUser, createUser, updateUser } from "../api/userApi";
+import { getBranches } from "../api/branchApi";
 
 export function User() {
 
@@ -111,6 +112,16 @@ export function User() {
             console.log(error.response.data);
         }
     }
+
+    const [branches, setBranches] = useState([]);
+
+    useEffect(() => {
+        getBranches().then(response => {
+            setBranches(response.data);
+        }).catch(error => {
+            console.log(error);
+        });
+    },[]);
 
 
     return (
@@ -319,10 +330,13 @@ export function User() {
                                         className="block flex-1 rounded-md border-0 py-1.5 pl-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:w-full sm:text-sm sm:leading-6"
                                 >
                                     <option></option>
-                                    <option value="woodlands">Woodlands</option>
-                                    <option value="jurong">Jurong</option>
-                                    <option value="tampines">Tampines</option>
-                                    <option value="cbd">CBD</option>
+                                    {
+                                        branches.map(branch => {
+                                            return (
+                                                <option key={branch._id} value={branch.branchName}>{branch.branchName}</option>
+                                            )
+                                        })
+                                    }
                                 </select>
                             </div>
 
