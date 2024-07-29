@@ -11,8 +11,8 @@ const ProtectedRoutes = () => {
 
     useEffect(() => {
         const checkAuth = async () => {
-            const isAuthenticated = await authenicateUser();
-            setIsAuthenticated(isAuthenticated);
+            const authRes = await authenicateUser();
+            setIsAuthenticated(authRes);
             setIsLoading(false);
         };
         checkAuth();
