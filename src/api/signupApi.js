@@ -11,3 +11,12 @@ export async function signupUser(user) {
         throw error;
     }
 }
+
+export async function checkUsername(username) {
+    try {
+        const response = await axios.get(`${API_URL}/${username}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}

@@ -4,6 +4,7 @@ import { logInStart, logInSuccess} from "../redux/userSlice";
 import { useDispatch } from "react-redux";
 import { getAccessToken } from "../api/authApi";
 import { loginUser } from "../api/authApi";
+import ButtonLoading from "../components/ButtonLoading";
 
 export function LoginPage() {
 
@@ -18,6 +19,8 @@ export function LoginPage() {
     const dispatch = useDispatch();
     const [searchParams, setSearchParams] = useSearchParams();
 
+    const [isLoading, setIsLoading] = useState(false);
+
     return (
         <>
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -26,6 +29,7 @@ export function LoginPage() {
             <form onSubmit={async (e) => {
                         e.preventDefault();
                         try {
+                            setIsLoading(true);
                             dispatch(logInStart());
                             const response = await loginUser(form);
                             dispatch(logInSuccess(response.data));
@@ -40,6 +44,8 @@ export function LoginPage() {
 
                         } catch (error) {
                             setError(error.response.data.message);
+                        } finally {
+                            setIsLoading(false);
                         }
                         
                     }
@@ -78,7 +84,19 @@ export function LoginPage() {
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                 </div>
-                <button className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Login</button>
+                <div className="h-16">
+                    <button 
+                        className="h-10 w-full justify-center rounded-md bg-indigo-600 mt-5 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        disabled={isLoading}
+                        >
+                        { 
+                            isLoading 
+                            ? <ButtonLoading />
+                            : <span className={`${isLoading ? "ml-3" : ""}`}>Login</span>
+                        }
+                    </button>
+                </div>
+                
                 
             </form>
             <div>

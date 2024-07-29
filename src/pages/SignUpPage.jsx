@@ -4,8 +4,9 @@ import { useDispatch } from "react-redux";
 import { signUpStart, signUpSuccess } from "../redux/userSlice";
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
-import { signupUser } from "../api/signupApi";
+import { signupUser, checkUsername } from "../api/signupApi";
 import { getBranches } from "../api/branchApi";
+import ButtonLoading from "../components/ButtonLoading";
 
 export function SignUpPage() {
 
@@ -27,6 +28,8 @@ export function SignUpPage() {
     const [error, setError] = useState("");
 
     const navigate = useNavigate();
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleResignUp = () => {
         setForm((prev) => ({
@@ -91,7 +94,7 @@ export function SignUpPage() {
                                             </DialogTitle>
                                             <div className="mt-2">
                                                 <p className="text-sm text-gray-500">
-                                                Your account has been created successfully. Please login to continue.
+                                                    Your account has been created successfully. Please login to continue.
                                                 </p>
                                             </div>
                                             </div>
@@ -132,24 +135,28 @@ export function SignUpPage() {
                 <form onSubmit={async (e)=>{
                     e.preventDefault();
                     try {
+                        setIsLoading(true);
                         dispatch(signUpStart());
+                        const checkUsernameResponse = await checkUsername(form.username);
+                        if (!checkUsernameResponse.data.availability) {
+                            setError("Username already exists. Please choose another username.");
+                            return;
+                        }
                         const response = await signupUser(form);
                         console.log("User created successfully");
                         dispatch(signUpSuccess());
                         setSignupSuccess(prev => !prev);
 
                     } catch (error) {
-                        if (error.response.data.code === 11000) {
-                            setError("Username already exists. Please choose another username.");
-                        } else {
-                            setError(error.response.data.message);
-                        }
+                        setError(error.response.data.message);
+                    } finally {
+                        setIsLoading(false);
                     }
                 }}>
                     <div className="space-y-12 my-3 mx-3">
                         <div className="border-b border-gray-900/10 pb-12">
                             
-                            <div className="mt-10 sm:grid sm:place-items-center sm:grid-cols-6 gap-x-6 gap-y-8 flex">
+                            <div className="mt-10 sm:grid sm:place-items-center sm:grid-cols-6 gap-x-6 gap-y-8">
                                 <div className="sm:col-span-6">
                                     <h1 className="text-xl font-semibold leading-7 text-gray-900">Registration</h1>
                                 </div>
@@ -240,7 +247,18 @@ export function SignUpPage() {
                                 </div>
 
                                 <div className="sm:col-span-6">
-                                    <button style={{ width: '150px' }} className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign Up</button>
+                                        <button
+                                            disabled={isLoading}
+                                            type="submit"
+                                            className="rounded-md h-12 w-32 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                        >
+                                            {
+                                                isLoading 
+                                                ? <ButtonLoading />
+                                                : "Sign Up"
+                                            }
+                                            
+                                        </button>
                                 </div>
 
                                 <div className="sm:col-span-6">
