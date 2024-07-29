@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { PlusIcon, LinkIcon } from '@heroicons/react/20/solid';
+import { LinkIcon } from '@heroicons/react/20/solid';
 import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../utils/dateFormatter';
 import { XCircleIcon} from "@heroicons/react/24/outline";
 import { useSelector } from 'react-redux';
-import Searchbar from '../components/Searchbar';
 import { getAccessToken } from '../api/authApi';
 import { getRecords, deleteRecord } from '../api/recordApi';
 import DeleteDialog from '../components/DeleteDialog';
+import List from '../components/List';
 
 export default function RecordsList() {
 
@@ -168,49 +168,15 @@ export default function RecordsList() {
                 />
             </>
             <>
-                <div className="flex justify-between">
-                    <h3 className="text-xl font-semibold p-4">Records</h3>
-                    <div className="p-4">
-                        <Searchbar setDisplay={setDisplayedRecords} full={records} categories={listCategories} />
-                    </div>
-                    {
-                        <div className="p-2">
-                            <button
-                                className="inline-flex items-center rounded-lg bg-white my-2 mr-16 px-2 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                                onClick={() => {
-                                    navigate('/record')
-                                }}
-                            >
-                                <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
-                                Add Record
-                            </button>
-                        </div>
-
-                    }
-                    
-                </div>
-                <div className="border rounded-lg overflow-hidden">
-                    <div className="relative w-full overflow-auto">
-                        <table className="w-full caption-bottom text-sm">
-                            <thead className="[&amp;_tr]:border-b">
-                                <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                    {
-                                        listCategories.map((category) => {
-                                            return (
-                                                <th key={category.value} className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                                    {category.name}
-                                                </th>
-                                            );
-                                        })
-                                    }
-                                </tr>
-                            </thead>
-                            <tbody className="[&amp;_tr:last-child]:border-0">
-                                {listRecords()}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <List
+                    setDisplay={setDisplayedRecords}
+                    full={records}
+                    listCategories={listCategories}
+                    title="Records"
+                    listRecords={listRecords}
+                    createTitle="Add Record"
+                    createLink="/record"
+                />
             </>
         </>
     )
