@@ -26,11 +26,11 @@ export default function StatisticsBox(props) {
                                     (curr - prev) > 0
                                     ? <div className={`${reverse ? "text-red-600" : "text-green-600"} text-sm p-2 space-x-2`}>
                                         {!isNaN(difference) && <ArrowTrendingUpIcon className="h-4 w-4 inline mr-1" /> }
-                                        +{isNaN(difference) ? "--" : difference}%
+                                        {(isNaN(difference) || prev === 0) ? "--" : `+${difference}`}%
                                     </div>
                                     : <div className={`${reverse ? "text-green-600" : "text-red-600"} text-sm p-2`}>
                                         {!isNaN(difference) && <ArrowTrendingDownIcon className="h-4 w-4 inline mr-1" />}
-                                        -{isNaN(difference) ? "--" : difference}%
+                                        {(isNaN(difference) || prev === 0) ? "--" : `-${difference}`}%
                                     </div>
                                 
                                 }
