@@ -17,7 +17,7 @@ export default function Searchbar(props) {
             return;
         } else {
             const filtered = full.filter((item) => {
-                return item[selectedCategory].toLowerCase().includes(searchQuery.toLowerCase());
+                return item[selectedCategory].toLowerCase().startsWith(searchQuery.toLowerCase());
             });
             setDisplay(filtered);
         
