@@ -145,11 +145,25 @@ export default function RecordsList() {
             const response = await deleteRecord(id).then(() => {
                 return fetchRecords();
             }).then((response) => {
-                setRecords(response.data);
-                setDisplayedRecords(response.data);
+                if (response) {
+                    setRecords(response.data);
+                    setDisplayedRecords(response.data);
+                }
+            }).catch((error) => {
+                if (error.response.status == 401 && error.response.data === "Access token expired") {
+                    getAccessToken().then(() => {
+                        return handleDeleteRecord(id);
+                    }).then((response) => {
+                        if (response) {
+                            setRecords(response.data);
+                            setDisplayedRecords(response.data);
+                        }
+                    });
+                }
+                throw error;
             });
         } catch (error) {
-            console.error(error);
+            throw error;
         }
 
     }

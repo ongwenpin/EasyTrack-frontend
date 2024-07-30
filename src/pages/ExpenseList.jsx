@@ -86,9 +86,10 @@ export default function ExpenseList() {
                         }
                     });
                 }
+                throw error;
             });
         } catch (error) {
-            console.error(error);
+           throw error;
         }
     }
 
