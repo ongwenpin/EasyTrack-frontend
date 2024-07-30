@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../utils/dateFormatter";
 import { getAccessToken } from "../api/authApi";
@@ -17,14 +17,32 @@ export default function GlobalSearchbar(props) {
 
     const navigate = useNavigate();
 
-    const [searchQuery, setSearchQuery] = useState("");
-
     const [displaySearchResults, setDisplaySearchResults] = useState(false);
 
     const [searchResults, setSearchResults] = useState({
         users: [],
         records: []
     });
+
+    const searchBarRef = useRef(null);
+
+    useEffect(() => {
+
+        function handleSearchBarClick(event) {
+            if (!searchBarRef.current.contains(event.target)) {
+                setDisplaySearchResults(false);
+            } else if (searchBarRef.current.contains(event.target)) {
+                setDisplaySearchResults(true);
+            }
+        }
+
+        document.addEventListener("click", handleSearchBarClick);
+
+        return () => {
+            document.removeEventListener("click", handleSearchBarClick);
+        }
+
+    }, []);
 
     async function getSearchResult(query) {
         try {
@@ -45,6 +63,7 @@ export default function GlobalSearchbar(props) {
             .then((response) => {
                 if (response) {
                     setSearchResults(response.data);
+                    setDisplaySearchResults(true);
                 }
             })
             .catch((error) => {
@@ -54,6 +73,7 @@ export default function GlobalSearchbar(props) {
                     }).then((response) => {
                         if (response) {
                             setSearchResults(response.data);
+                            setDisplaySearchResults(true);
                         }
                     });
                     return;
@@ -61,16 +81,6 @@ export default function GlobalSearchbar(props) {
                 console.error("Error fetching search results: ", error);
             });
     }, 500);
-
-    useEffect(() => {
-        if (searchQuery != "") {
-            debouncedSearch(searchQuery);
-            setDisplaySearchResults(true);
-        } else {
-            setDisplaySearchResults(false);
-        }
-        
-    }, [searchQuery.length]);
 
     const SearchResultCard = (props) => {
 
@@ -150,10 +160,19 @@ export default function GlobalSearchbar(props) {
 
     return (
         <>
-            <div className="relative sm:w-full max-w-md">
+            <div 
+                className="relative sm:w-full max-w-md"
+                ref={searchBarRef}
+            >
                 <input
                     type="text"
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => {
+                        if (e.target.value !== "") {
+                            debouncedSearch(e.target.value);
+                        } else {
+                            setDisplaySearchResults(false);
+                        }
+                    }}
                     className="max-w-md w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     placeholder="Search for users or records..."
                 >
