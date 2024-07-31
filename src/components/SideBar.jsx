@@ -6,7 +6,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 export default function SideBar() {
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
 
     const {currentUser, isAdmin} = useSelector(state => state.user);
 

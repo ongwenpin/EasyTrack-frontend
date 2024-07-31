@@ -27,11 +27,11 @@ export default function SettingsPage() {
 
     const Branch = (props) => {
         return (
-            <tr className="font-semibold text-center border">
+            <tr className="font-semibold text-center border border-gray-900/25">
                 <td className="p-2">{props.branch.branchName}</td>
                 <td className="p-2">
                     <button
-                        className="inline-flex items-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-400"
+                        className="inline-flex items-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-red-400 disabled:bg-red-400"
                         onClick={() => {
                             setSelectedBranch(props.branch);
                             setDisplayBranchDeleteDialog(true);
@@ -252,7 +252,7 @@ export default function SettingsPage() {
                             </button>
                             
                         </div>
-                        <div>
+                        <div className="">
                             <fieldset
                                 className="border-2 border-gray-900/10 p-5 rounded-lg flex flex-col space-y-4"
                                 disabled={!isEditing}
@@ -262,7 +262,7 @@ export default function SettingsPage() {
                                         <label htmlFor="branches" className="block text-md font-medium text-gray-700 pb-2">Branches</label>
                                         <button
                                             type="button"
-                                            className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                                            className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:bg-gray-50"
                                             onClick={() => setDisplayCreateBranchDialog(true)}
                                         >
                                             Add Branch

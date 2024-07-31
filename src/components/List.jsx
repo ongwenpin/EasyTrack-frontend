@@ -2,6 +2,7 @@ import Searchbar from "./Searchbar";
 import { PlusIcon } from '@heroicons/react/20/solid';
 import { useNavigate } from "react-router-dom";
 
+{/* List component for list pages (e.g. RecordList, UserList, etc.) */}
 export default function List(props) {
 
     const {setDisplay, full, listCategories, title, listRecords, createTitle, createLink} = props;

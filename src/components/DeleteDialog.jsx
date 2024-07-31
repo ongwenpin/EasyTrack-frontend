@@ -3,6 +3,7 @@ import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@
 import { ExclamationTriangleIcon, XCircleIcon, CheckCircleIcon  } from "@heroicons/react/24/outline";
 import ButtonLoading from './ButtonLoading';
 
+{/* Delete Dialog for list pages (e.g. RecordList, UserList, etc.) */}
 export default function DeleteDialog(props) {
 
     const {displayDialog, setDisplayDialog, title, message, setSelected, handleDelete, deleteTarget} = props;
