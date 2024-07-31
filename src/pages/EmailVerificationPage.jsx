@@ -21,7 +21,7 @@ export default function EmailVerificationPage() {
     //     if (!hasCurrentUser) {
     //         navigate(
     //             {
-    //                 pathname: "/login",
+    //                 pathname: "/",
     //                 search: "?redirect=/verify/" + verify_key
     //             }
     //         );
@@ -81,7 +81,7 @@ export default function EmailVerificationPage() {
                                                 </div>
                                                 <div className="p-4">
                                                     <button  
-                                                        onClick={() => navigate("/")}
+                                                        onClick={() => navigate("/dashboard")}
                                                         className="text-sm font-semibold leading-6 text-gray-900 rounded-md bg-gray-200 px-3.5 py-2.5 shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
                                                     >
                                                         Go Homepage
@@ -122,7 +122,7 @@ export default function EmailVerificationPage() {
                                                             </div>
                                                             <div className="p-4">
                                                                 <button  
-                                                                    onClick={() => navigate("/")}
+                                                                    onClick={() => navigate("/dashboard")}
                                                                     className="text-sm font-semibold leading-6 text-gray-900 rounded-md bg-gray-200 px-3.5 py-2.5 shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
                                                                 >
                                                                     Go Homepage

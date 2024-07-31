@@ -15,7 +15,7 @@ export default function SideBar() {
     const location = useLocation();
 
     const [navigation, setNavigation] = useState([
-        { name: 'Dashboard', href: '/', current: true, icon: HomeIcon },
+        { name: 'Dashboard', href: '/dashboard', current: true, icon: HomeIcon },
         { name: 'Users', href: '/users', current: false, icon: UsersIcon },
         { name: 'Records', href: '/records', current: false, icon: ClipboardDocumentIcon },
         { name: 'Expenses', href: '/expenses', current: false, icon: CurrencyDollarIcon },
