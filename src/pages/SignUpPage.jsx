@@ -106,7 +106,7 @@ export function SignUpPage() {
                                             className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
                                             onClick={() => {
                                                 setSignupSuccess(prev => !prev);
-                                                navigate("/login");
+                                                navigate("/");
                                             }}
                                         >
                                             Login
@@ -264,7 +264,7 @@ export function SignUpPage() {
                                 <div className="sm:col-span-6">
                                     <p className="mt-10 text-center text-sm text-gray-500">
                                         Have an account? 
-                                        <a href="/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Login</a>
+                                        <a href="/" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Login</a>
                                     </p>
                                 </div>
  

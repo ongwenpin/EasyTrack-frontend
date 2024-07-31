@@ -37,7 +37,7 @@ export default function RecordsList() {
                 throw new Error("Access token expired");
                 
             }
-            navigate('/login');
+            navigate("/");
             return;
         }
     }

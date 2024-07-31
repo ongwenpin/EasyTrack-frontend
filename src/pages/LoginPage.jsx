@@ -39,7 +39,7 @@ export function LoginPage() {
                             if (redirect !== null) {
                                 navigate(redirect);
                             } else {
-                                navigate("/");
+                                navigate("/dashboard");
                             }
 
                         } catch (error) {

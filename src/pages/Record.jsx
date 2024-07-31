@@ -54,7 +54,7 @@ export default function Record() {
                 throw new Error("Access token expired");
                 
             }
-            navigate('/login');
+            navigate("/");
             return;
         }
     }

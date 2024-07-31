@@ -50,7 +50,7 @@ export default function Expense() {
                 throw new Error("Access token expired");
                 
             }
-            navigate('/login');
+            navigate("/");
             return;
         } 
     }

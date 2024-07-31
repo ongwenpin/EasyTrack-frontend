@@ -98,7 +98,7 @@ export function UsersList() {
                 throw new Error("Access token expired");
                 
             }
-            navigate('/login');
+            navigate('/');
             return;
         }
     }

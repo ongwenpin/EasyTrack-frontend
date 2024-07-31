@@ -51,7 +51,7 @@ export default function Navbar() {
       dispatch(logOutStart());
       const response = await logout(currentUser.username);
       dispatch(logOutSuccess());
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.error(error.response.data);
       dispatch(logOutFailure(error.response.data));

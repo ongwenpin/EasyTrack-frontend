@@ -56,7 +56,7 @@ export function User() {
                 throw new Error("Access token expired");
                 
             }
-            navigate("/login");
+            navigate("/");
             return;
         }
 

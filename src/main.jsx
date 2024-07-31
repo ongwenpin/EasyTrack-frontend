@@ -22,10 +22,18 @@ import SettingsPage from './pages/SettingsPage.jsx';
 // If path unknown, redirect to some page
 const router = createBrowserRouter([
   {
+    path: "/",
+    element: <LoginPage/>
+  },
+  {
+    path: "/signup",
+    element: <SignUpPage/>
+  },
+  {
     element: <ProtectedRoutes/>,
     children: [
       {
-        path: "/",
+        path: "/dashboard",
         element: <Dashboard/>
       },
       {
@@ -60,17 +68,9 @@ const router = createBrowserRouter([
         path: "settings",
         element: <SettingsPage/>
       }
-      
+    
     ]
-  },
-  {
-    path:"/signup",
-    element: <SignUpPage/>
-  },
-  {
-    path:"/login",
-    element: <LoginPage/>
-  },
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
