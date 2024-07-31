@@ -2,7 +2,7 @@ import App from "../App";
 import { authenicateUser } from "../api/authApi";
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Loading  from "./Loading.jsx";
+import Loading  from "./ButtonLoading.jsx";
 
 const ProtectedRoutes = () => {
 
@@ -19,8 +19,10 @@ const ProtectedRoutes = () => {
     },[]);
     
     return  isLoading 
-        ? <div className="flex align-middle sm:h-20 sm:my-40 mb-10 h-8">
-            <Loading/> 
+        ? <div className="flex justify-center align-middle h-20 mb-10 mt-40">
+            <div>
+                <Loading/> 
+            </div>
         </div> 
         
         : isAuthenticated
